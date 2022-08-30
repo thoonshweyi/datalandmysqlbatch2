@@ -1,0 +1,32 @@
+pypMyAdmin
+->      Create Database
+            -database name must be small letter & plural
+            -For Myanmar Font Choose
+             utf8_unicode_ci    ***
+             uft8_general_ci
+
+->      Create table name 
+            -table name must be small letter & plural 
+            
+
+->      column name must be small letter
+            Column Type
+            -int (for only number)
+            -varchar (for text & number)
+            -text (for logn text & number)
+
+->      edit column
+->      drop column
+->      drop database
+
+
+Homework 
+database - abccompanies
+table - employees
+        -id
+        -firstname
+        -lastname
+        -phone
+        -address
+
+        
