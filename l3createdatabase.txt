@@ -1,0 +1,24 @@
+=>Show Databases;
+SHOW DATABASES;
+
+=>Create Database
+CREATE DATABASE wdf4102;
+
+=>Delete Database
+DROP DATABASE wdf4102;
+
+=>Choose Database
+USE wdf4102;
+
+
+
+=About Database Naming
+*CAN CREATE
+Create Database book_shop;
+Create Database SchoolApp;
+Create Database bookingsystem;
+
+*CAN'T CREATE
+X CREATE DATABASE MY APP;
+X CREATE DATABASE MY$#APP;
+---------------------------------------------------
