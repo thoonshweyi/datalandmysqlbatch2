@@ -1,0 +1,71 @@
+=>Insert Single Data
+
+Method 1 = Syntax
+INSERT INTO tablename (column1,column2,column3,...)
+VALUE (value1,value2,value3,...);
+
+Method 2 = Syntax
+INSERT INTO tablename
+VALUE (value1,value2,value3,...);
+
+-----------------------------------------------------------
+-Exercise
+
+CREATE TABLE persons(
+    personid INT,
+    firstname VARCHAR(20),
+    lastname VARCHAR(20),
+    city VARCHAR(15),
+    address VARCHAR(200)
+);
+DESC persons;
+
+INSERT INTO persons (personid,firstname,lastname,city,address)
+VALUE (1,'tin htut','aung','mandalay','no.9,myittar st');
+
+INSERT INTO persons (personid,firstname,lastname,city)
+VALUES (2,'tin htut','aung','mandalay');
+
+INSERT INTO persons VALUE(3,'aung','tin htut','yangon','no 10,thitsar st');
+INSERT INTO persons VALUE(4,'aung','kyaw','thitsar','yangon');
+INSERT INTO persons VALUE(5,'aung','kyaw','no 10,thitsar st','yangon');
+INSERT INTO persons VALUE(6,'maung','zaw',NULL,'no 11,sabal st');
+
+
+
+
+SELECT * from persons;
+-------------------------------------------------------------------
+=>Insert Multi Data
+
+Method 1 = Syntax
+INSERT INTO tablename (column1,column2,column3,...)
+VALUE (value1,value2,value3,...),
+        (value1,value2,value3,...),
+        (value1,value2,value3,...),
+        ...;
+
+Method 2 = Syntax
+INSERT INTO tablename
+VALUE (value1,value2,value3,...),
+        (value1,value2,value3,...),
+        (value1,value2,value3,...),
+        ...;
+
+-------------------------------------------------------------------
+=Exercise
+
+INSERT INTO persons (personid,firstname,lastname,city,address)
+VALUES (7,'nu','nu','mandalay','no.19,myiiat st'),
+        (8,'mya','may','mandalay','no.29,myiiat st'),
+        (9,'lu','lu','yangon','no.30,myiiat st');
+
+INSERT INTO persons (personid,firstname,lastname,city,address)
+VALUE (10,'yu','yu','mandalay','no.31,myiiat st'),
+        (11,'kyaw','kyaw','mandalay','no.32,myiiat st'),
+        (12,'hnin','hnin','yangon','no.33,myiiat st');
+
+INSERT INTO persons
+VALUES (13,'pa','pa','mawlamyine','no.19,myittar st'),
+         (14,'hla','hla','mawlamyine','no.19,myittar st'),
+         (15,'ma','ma','bago','no.34,myittar st');
