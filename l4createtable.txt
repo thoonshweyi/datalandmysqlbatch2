@@ -163,3 +163,160 @@ DESC itaccessories;
 
 SELECT * FROM itaccessories;
 
+*NOTE : FIRST for as the first field name
+ALTER TABLE itaccessories
+ADD COLUMN unitprice DECIMAL(10,2) NOT NULL FIRST;
+
+DESC itaccessories;
+
+SELECT * FROM itaccessories;
+
+ALTER TABLE itaccessories
+ADD COLUMN madeby VARCHAR(50) NOT NULL AFTER item;
+
+DESC itaccessories;
+
+SELECT * FROM itaccessories;
+
+=Exesrcise (Multi)
+
+ALTER TABLE itaccessories 
+ADD COLUMN status INT AFTER brand,
+ADD COLUMN createdby INT NOT NULL AFTER status;
+
+DESC itaccessories;
+
+SELECT * FROM itaccessories;
+
+INSERT INTO itaccessories (unitprice,item,madeby,stock,brand,status,createdby)
+VALUES (10,'keyboard','china',30,'a4tech',1,1001),
+        (5,'mouse','taiwan',50,'logitech',1,1008);
+
+SELECT * FROM itaccessories;
+
+
+-----------------------------------------------------------------------------------------------------
+=> RENAME column in table
+ = Syntax
+ 
+ ALTER TABLE tablename
+ CHANGE COLUMN oldcolumnname newcolumnname datatype;
+
+
+
+ALTER TABLE itaccessories
+CHANGE COLUMN stock totalqty INT;
+
+ALTER TABLE itaccessories
+CHANGE COLUMN madeby manufactureby VARCHAR(30);
+
+DESC itaccessories;
+
+SELECT * FROM itaccessories;
+
+ALTER TABLE itaccessories
+CHANGE COLUMN manufactureby manufactureby VARCHAR(50);
+*change only data type
+-----------------------------------------------------------------------------------------------------
+=>Modify column in table (Use for change column data type)
+
+=Syntax (Single)
+
+ALTER TABLE tablename
+MODIFY columnname newdatatype;
+
+=Syntax (Multi)
+ALTER TABLE tablename
+MODIFY columnname newdatatype,
+MODIFY columnname newdatatype,
+...;
+
+=Exercise
+DESC itaccessories;
+
+ALTER TABLE itaccessories
+MODIFY manufactureby VARCHAR(30);
+
+DESC itaccessories;
+
+SELECT * FROM itaccessories;
+
+ALTER TABLE itaccessories
+MODIFY manufactureby VARCHAR(50) NOT NULL;
+
+DESC itaccessories;
+
+ALTER TABLE itaccessories
+MODIFY item VARCHAR(100) NOT NULL;
+
+DESC itaccessories;
+
+SELECT * FROM itaccessories;
+
+
+=Exercise(Multi)
+
+DESC itaccessories;
+
+ALTER TABLE itaccessories
+MODIFY item VARCHAR(50) NULL,
+MODIFY brand VARCHAR(30);
+
+*error = bcz of NULL already in data table
+ALTER TABLE itaccessories
+MODIFY status INT NOT NULL;
+
+=>Move Column
+ALTER TABLE itaccessories
+MODIFY unitprice DECIMAL(12,2) NOT NULL AFTER brand;
+
+DESC itaccessories;
+
+SELECT * FROM itaccessories;
+
+----------------------------------------------------------
+=>Drop Columns in table
+
+=Syntax (Single)
+ALTER TABLE tablename
+DROP COLUMN columnname;
+
+=Syntax (Multi)
+ALTER TABLE tablename
+DROP COLUMN columnname,
+DROP COLUMN columnname;
+
+=Exercise
+DESC itaccessories;
+SELECT * FROM itaccessories;
+
+
+ALTER TABLE itaccessories
+DROP COLUMN status;
+
+ALTER TABLE itaccessories
+DROP COLUMN manufactureby,
+DROP COLUMN createdby;
+
+SELECT * FROM itaccessories;
+
+----------------------------------------------------------
+=>CREATE TABLE As Statemtne (Clone | Copy)
+
+=Syntax: 
+
+CREATE TABLE IF NOT EXISTS newtable AS
+SELECT * FROM existingtable;
+
+DESC members;
+SELECT * FROM members;
+
+CREATE TABLE IF NOT EXISTS workers AS
+SELECT * FROM members;
+
+DESC workers;
+SELECT * FROM workers;
+----------------------------------------------------------
+
+
+

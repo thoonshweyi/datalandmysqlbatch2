@@ -1,0 +1,18 @@
+=>SUBSTRING (MYsql start is 1)
+
+=Syntax = SUBSTRING();
+SELECT SUBSTRING('text',start,end);
+
+=Syntax = SUBSTR();
+SELECT SUBSTR('text',start,end);
+---------------------------------------------------------
+*empty
+SELECT SUBSTRING('Hello World',0,4);
+
+SELECT SUBSTRING('Hello World',1,4);    //Hell
+SELECT SUBSTRING('Hello World',2,4);    //ello
+
+SELECT SUBSTRING('Hello World',7);        //World
+SELECT SUBSTRING('Mysql Online Class',7); //Online Class
+
+//29SR
