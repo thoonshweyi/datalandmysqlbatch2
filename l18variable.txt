@@ -1,0 +1,64 @@
+=>VARIABLES
+
+1.SYSTEM Variables
+    (i) GLOBAL Variables
+    (ii) SESSION Variables
+2. Usesr-Defined Variables
+3. Parameters and Local Variable
+
+@@ perfix is use for - System Variable
+@ prefix is use for - User Defined Variable
+
+----------------------------------------------------------
+
+=> System Variables
+
+SHOW VARIABLES;
+SELECT @@warning_count;
+SELECT @@error_count;
+-@@warning_count and @@error_count is always in PHPMyadim because browser reload.
+-run in terminal will show real error_count.
+
+SELECT * FROM persons;
+----------------------------------------------------------
+=>User-Defined Variables
+
+Method 1 ( Using SELECT )
+
+SELECT @myfirstvar := 'Hello Myanmar';
+SELECT @myfirstvar;
+*when above code seperate, @myfirstvar is always NULL because browser reload.
+
+SELECT @myfirstvar := 'Save Myanmar'; //overwrite @myfirstvar
+SELECT @myfirstvar;
+
+Method 2 ( Using SET )
+
+SET @mysecondvar = 'Data Land';
+SELECT @mysecondvar;
+
+SET @mysecondvar = 'Hello Thailand';
+SELECT @mysecondvar;
+
+SELECT @num1 := 10;
+SELECT @num2 := 20;
+SELECT @num1;
+SELECT @num2;
+
+SELECT @num1 := 10;
+SELECT @num2 := 20;
+SELECT @num1+@num2;
+
+SELECT @num1 := '10';
+SELECT @num2 := '20';
+SELECT @num1+@num2;
+
+SELECT @num1 := 10;
+SELECT @num2 := 20;
+SELECT @num3 := '30';
+SELECT @num4 := '40';
+
+SELECT @num1,@num2,@num3,@num4;
+SELECT @num3*@num4;
+
+//6VR

@@ -1,0 +1,44 @@
+CREATE DATABASE mysqlpractice;
+
+CREATE TABLE IF NOT EXISTS members(
+    firstname VARCHAR(150),
+    lastname VARCHAR(150),
+    email   VARCHAR(60),
+    address VARCHAR(200)
+);
+
+SHOW TABLES;
+SHOW TABLES FROM mysqlpractice;
+
+SHOW FULL TABLES; *show with Table_type
+SHOW FULL TABLES FROM mysqlpractice;
+
+DESC members;
+
+SHOW COLUMNS FROM members;
+SHOW COLUMNS FROM mysqlpractice.members;
+
+CREATE TABLE IF NOT EXISTS student(
+    id INT,
+    name VARCHAR(150),
+    phone   VARCHAR(15),
+    address VARCHAR(200)
+);
+
+ALTER TABLE student
+RENAME TO students;
+
+DROP TABLE members,student;
+DROP TABLE IF EXISTS members,student; //only delete members table;
+
+INSERT INTO members(firstname,lastname,email,address)
+VALUES('rose`','park','roses_are_rosie@gmail.com','melbourne, australia'),
+        ('lisa','l','lalisa@gmail.com','bangkok, thailand'),
+        ('jisoo','kim','soyaa@gmail.com','seoul, korea'),
+        ('jennie','kim','kimjennie@gmail.com','seoul, korea');
+
+TRUNCATE table members;
+
+DELETE FROM members;
+
+SELECT * FROM members;

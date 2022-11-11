@@ -1,0 +1,30 @@
+=> CHAR_LENGTH() - count  characters in String
+
+Syntax
+
+SELECT CHAR_LENGTH('Hello World'); //11
+-------------------------------------------------------------
+
+SELECT * FROM persons;
+
+SELECT CHAR_LENGTH(firstname) FROM persons;     //8
+
+SELECT firstname,CHAR_LENGTH(firstname) AS 'total count' FROM persons;      
+//firstname,total count
+//tin htut,8
+//aung,4
+-------------------------------------------------------------
+=>CHAR_LENGTH() with CONCAT()
+
+SELECT CONCAT(firstname,' is ',CHAR_LENGTH(firstname),' characters long.') FROM persons; //tin htut is 8 characters long.
+
+SELECT CONCAT(firstname,' is ',CHAR_LENGTH(firstname),' characters long.') AS 'length' FROM persons; //maung is 5 characters long.
+
+'sql-format.com'
+
+SELECT
+  CONCAT(firstname, ' is ', CHAR_LENGTH(firstname), ' characters long.') AS 'length'
+FROM persons;
+
+
+//5CC

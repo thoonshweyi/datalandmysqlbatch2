@@ -1,0 +1,54 @@
+=>REPLACE
+
+=Syntax
+SELECT REPLACE(original,ori part,new);
+---------------------------------------------------------
+
+SELECT REPLACE("Hello World","Hell","Zer"); //Zero World
+
+*no action
+SELECT REPLACE("Hello World","hell","Zer"); //Hello World
+*no action
+SELECT REPLACE("Hello World","hello","Zer"); //Hello World
+
+SELECT REPLACE("Hello World","o","0"); //Hell0 W0rld
+SELECT REPLACE("Hell0 World","0","*"); //Hell* World
+SELECT REPLACE("Hello World","l","7"); //He770 Wor7d
+*replace all matching
+
+*Case Sensitive
+SELECT REPLACE("Hello World","O","5"); //Hello World
+
+SELECT REPLACE("coffee milk bread cheese",' ',' and '); //coffee and milk and bread and cheese
+
+---------------------------------------------------------
+SELECT * FROM persons;
+
+SELECT city FROM persons;
+
+SELECT REPLACE(city,'m',"M") FROM persons;
+SELECT REPLACE(city,'m',"M") AS capital FROM persons;
+SELECT REPLACE(city,'a',"A") AS capital FROM persons; //mAndAlAy,yAngon,mAwlAmyine
+---------------------------------------------------------
+
+=>REPLACE() with SUBSTRING() and CONCAT()
+
+SELECT * FROM persons;
+SELECT city FROM persons;
+
+SELECT SUBSTRING(REPLACE(city,'m','M'),1,5) FROM persons; //Manda
+
+SELECT SUBSTRING(
+REPLACE(address,'n','N'),1,5) 
+FROM persons;                   //No 11
+
+SELECT CONCAT(SUBSTRING(REPLACE(address,'n','N'),1,10),'...') FROM persons; //No 10,thit...
+
+SELECT CONCAT(
+SUBSTRING(REPLACE(address,'n','N'),1,10),'...') AS street 
+FROM persons;                   
+
+SELECT CONCAT(
+SUBSTRING(REPLACE(address,'n','N'),1,10),'...') AS 'short address' 
+FROM persons;
+*word contain space must be in quote
