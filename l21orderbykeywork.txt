@@ -1,0 +1,39 @@
+=> ORDER BY Keyword ( Sorting our results)
+// just change in UI
+
+= Syntax
+
+SELECT column1, column2, column3... FROM tablename
+ORDER BY column ASC|DESC;
+--------------------------------------------------------
+= EXERCISE
+
+SELECT * FROM customers;
+
+SELECT * FROM customers ORDER BY firstname ASC;
+// a to z
+
+SELECT * FROM customers ORDER BY firstname DESC;
+// z to a
+
+SELECT * FROM customers ORDER BY firstname;
+// ASC is default.
+
+SELECT * FROM customers ORDER BY amount; 
+// from 170000
+
+SELECT * FROM customers ORDER BY amount DESC; 
+// from 800000
+
+SELECT id,firstname,lastname,amount,city FROM customers
+WHERE amount > 200000
+ORDER BY amount ASC;
+
+SELECT * FROM customers ORDER BY firstname;
+SELECT * FROM customers ORDER BY firstname,age;
+// 2 column order by order row with second column when first column value same
+
+SELECT id,firstname,lastname,amount,city FROM customers ORDER BY 2; // as firstname
+SELECT id,firstname,lastname,amount,city FROM customers ORDER BY 3; // as lastname
+SELECT id,firstname,lastname,amount,city FROM customers ORDER BY 5 DESC; // as city
+-----------------------

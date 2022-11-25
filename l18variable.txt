@@ -61,4 +61,3 @@ SELECT @num4 := '40';
 SELECT @num1,@num2,@num3,@num4;
 SELECT @num3*@num4;
 
-//6VR
