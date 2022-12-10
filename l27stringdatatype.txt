@@ -1,0 +1,45 @@
+=>Data Types (Base on Version 8.0)
+
+*String Data Types ( types )
+
+Data Types                                  Description
+1.CHAR(size)
+2.VARCHAR(size)
+3.TEXT
+4.TINYTEXT
+5.MEDIUMTEXT
+6.LONGTEXT
+
+7.BINARY(size)
+8.VARBINARY()
+9.TINYBLOB
+10.BLOB(size)
+11.MEDIUMBLOB
+12.LONGBLOB
+
+13.ENUM('val1','val2','val3',...)
+14.SET('val1','val2','val3')
+
+How the character take spaces on memery?
+aung
+11111
+
+1bit = 8bit
+byte = 1024
+kb
+mb
+gb
+tb
+...
+
+---------------------------------------------------------
+
+2ways to save images on server
+1. save into the path and the save the path in the database
+2. directly save images in the database as binary format
+
+----------------------------------------------------------
+
+ENUM('male','female')
+
+SET('red','green','blue')

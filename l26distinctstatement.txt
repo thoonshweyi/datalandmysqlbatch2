@@ -1,0 +1,30 @@
+=>DISTINCT Statement
+
+=Syntax
+SELECT DISTINCT column1,column2,...
+FROM tablename;
+-----------------------------------------
+=EXERCISE
+
+SELECT * FROM customers;
+
+SELECT city FROM customers;
+
+SELECT DISTINCT city FROM customers;
+
+SELECT DISTINCT city FROM customers ORDER BY city;
+
+*ERROR (Note : DISTINCT condition column name must have in expresssion)
+SELECT DISTINCT city FROM customers ORDER BY age;
+
+SELECT DISTINCT age FROM customers ORDER BY age;
+
+SELECT DISTINCT age,city FROM customers ORDER BY age;
+
+SELECT COUNT(DISTINCT city) FROM customers;
+//7
+
+
+//3DT
+-----------------------------------------------------------------
+=>Grop By
