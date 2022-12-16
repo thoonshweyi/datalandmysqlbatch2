@@ -3,22 +3,22 @@
 *String Data Types ( types )
 
 Data Types                                  Description
-1.CHAR(size)
-2.VARCHAR(size)
-3.TEXT
-4.TINYTEXT
-5.MEDIUMTEXT
-6.LONGTEXT
+1.CHAR(size)                                A Fixed Length String.String (can contain letters, numbers and special characters) 0 to 255
+2.VARCHAR(size)                             A Variabl Length String. String (can contain letters numbers and special characters) 0 to 255
+3.TEXT                                      Hold a string with maximum size 65,XXX (65 kb)
+4.TINYTEXT                                  Hold a string with maximum size 255 (255 bytes)
+5.MEDIUMTEXT                                Hold a string with maximum size 16,XXX,XXX (16 mb)
+6.LONGTEXT                                  Hold a string with maximum size 4,XXX,XXX,XXX (4 gb)
 
-7.BINARY(size)
-8.VARBINARY()
-9.TINYBLOB
-10.BLOB(size)
-11.MEDIUMBLOB
-12.LONGBLOB
+7.BINARY(size)                              Equal to CHAR(), but stores binary byte string.
+8.VARBINARY()                               Equal to VARCHAR(), but stores binary byte string.
+9.TINYBLOB                                  For BLOBS (Binary Large Objects). Max size (255 bytes)
+10.BLOB(size)                               For BLOBS (Binary Large Objects). maximum size 65,XXX (65 kb)
+11.MEDIUMBLOB                               For BLOBS (Binary Large Objects). maximum size 16,XXX,XXX (16 mb)
+12.LONGBLOB                                 For BLOBS (Binary Large Objects). maximum size 4,XXX,XXX,XXX (4 gb)
 
-13.ENUM('val1','val2','val3',...)
-14.SET('val1','val2','val3')
+13.ENUM('val1','val2','val3',...)           A string object that can have only one value, choose from list of possible value.
+14.SET('val1','val2','val3')                A string object that can have 1 or more values, choose from list of possible value.
 
 How the character take spaces on memery?
 aung
@@ -43,3 +43,41 @@ tb
 ENUM('male','female')
 
 SET('red','green','blue')
+
+-----------------------------------------------------------
+=>CHAR
+*CHAR is faster for fixed length text
+eg.telephone numbers, zip code, Yes/No Y/N, Male/Female M/F
+
+CHAR(4) VS VARCHAR(4)
+User Input
+Value           CHAR(4)         Storage         VARCHAR(4)          Storage
+''              '    '          4 bytes         ''                  1 byte
+'ab'            'ab  '          4 bytes         'ab'                3 byte
+'abcd'          'abcd'          4 bytes         'abcd'              5 byte
+'abcdefg'       'abcd'          4 bytes         'abcd'              5 byte
+-----------------------------------------------------------
+=EXERCISE
+
+CREATE TABLE IF NOT EXISTS contacts(
+    name CHAR(5),
+    city VARCHAR(10)
+);
+DESC contacts;
+
+*error
+INSERT INTO contacts(name,city)
+VALUES ('aung aung','mandalay city'),
+        ('tar gyi','mawlamyine city'),
+        ('kyaw gyi','yangon city'),
+        ('su su','bago city'),
+        ('hla hla','pyinoolwin city');
+* bcz version no error 
+
+INSERT INTO contacts(name,city)
+VALUES ('aung','mandalay'),
+        ('tar','mawlamyine'),
+        ('kyaw','yangon'),
+        ('su','bago'),
+        ('hla','pyinoolwin');
+-----------------------------------------------------
