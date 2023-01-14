@@ -1,0 +1,403 @@
+=>Database
+    =>Show databases
+        SHOW DATABASES;
+    
+    =>Create a new database
+        CREATE DATABASE databasename;
+    
+    =>Delete a database
+        DROP DATABASE databasename;
+
+    =>Choose database
+        USE databasename;
+
+=>Table
+    * Database must be choosen before anything changes happen to table.
+    =>Show tables
+        SHOW TABLES;
+        SHOW FULL TABLES;
+
+        SHOW TABLES FROM databasename;
+        SHOW TABLES IN databasename;
+
+        SHOW FULL TABLES FROM databasename;
+        SHOW FULL TABLES IN databasename;
+    =>Create a new Table
+        CREATE TABLE tablename(
+            colume1 datatype,
+            colume2 datatype,
+            colume3 datatype,
+            ...
+        );
+
+        CREATE TABLE IF NOT EXISTS tablename(
+            colume1 datatype,
+            colume2 datatype,
+            colume3 datatype,
+            ...
+        );
+    
+    =>Show table structure
+        -Method 1
+            DESCRIBE tablename;
+            DESC tablename; 
+
+        -Method 2
+            SHOW COLUMNS FROM tablename;
+
+            SHOW COLUMNS FROM databasename.tablename;
+            SHOW COLUMNS FROM tablename IN databasename;
+    =>Delete a table
+        -Single
+            DROP TABLE tablename;
+            DROP TABLE IF EXISTS tablename;
+
+            DROP TABLE databasename.tablename;
+            DROP TABLE IF EXISTS databasename.tablename;
+        -Multi
+            DROP TABLE tablename,tablename,tablename,...;
+            DROP TABLE IF EXISTS tablename,tablename,tablename,...;
+
+            DROP TABLE databasename.tablename,databasename.tablename,databasename.tablename,...;
+            DROP TABLE IF EXISTS databasename.tablename,databasename.tablename,databasename.tablename,...;
+
+    =>Rename table
+        ALTER TABLE tablename
+        RENAME TO newtablename;
+
+=>Row
+    => Insert Data Into Table
+        -Single
+            -Method 1
+                INSERT INTO tablename (column1,column2,column3,...)
+                VALUE (value1,value2,value3,...);
+
+            -Method 2
+                INSERT INTO tablename
+                VALUE (value1,value2,value3,...);
+        
+        -Multi
+            -Method 1
+                INSERT INTO tablename (column1,column2,column3,...)
+                VALUES (value1,value2,value3,...),
+                        (value1,value2,value3,...),
+                        ...;
+            -Method 2
+                INSERT INTO tablename
+                VALUES (value1,value2,value3,...),
+                        (value1,value2,value3,...),
+                        ...;
+        
+         /*
+            -column and value must be order
+            -Method 2 must give values to all columns
+         */
+        
+    =>Select Data
+        SELECT * FROM tablename;
+        SELECT colume1,colume2,colume3,... FROM tablename;
+
+        /*
+            SELECT column order only affect at result and do not affect original table 
+        */
+
+    =>NULL & NOT NULL
+        CREATE TABLE IF NOT EXISTS students(
+            name VARCHAR(10),
+            age INT(5)
+        );
+        INSERT INTO students(name,age)
+        VALUE('aung aung',20);
+
+        INSERT INTO students(name)
+        VALUE('aye aye');
+
+        INSERT INTO students(age)
+        VALUE(20);
+
+        INSERT INTO students()
+        VALUE();
+
+        INSERT INTO students()
+        VALUE();
+
+        //aung aung, 20
+        //aye aye, NULL
+        //NULL, 20
+        //NULL, NULL
+        //NULL, NULL
+
+
+        CREATE TABLE IF NOT EXISTS students(
+            name NOT NULL VARCHAR(10),
+            age INT(5)
+        );
+
+        DESC students;
+        /*
+            NULL = 'NO' for NOT NULL column
+            NULL = 'YES' for default and NULL column
+        */
+
+        INSERT INTO students(name,age)
+        VALUE('aung aung',20);
+
+        INSERT INTO students(name)
+        VALUE('aye aye');
+
+        *error
+        INSERT INTO students(age)
+        VALUE(20);
+
+        *error
+        INSERT INTO students()
+        VALUE();
+
+        *error
+        INSERT INTO students()
+        VALUE();
+
+        *because of version no error. Blur('') inserted
+
+    =>DEFAULT
+        
+        CREATE TABLE vehicles(
+            brand VARCHAR(100) DEFAULT "unnamed",
+            madeby VARCHAR(20) NOT NULL DEFAULT "china",
+        );
+
+        DESC vehicles;
+        /*
+            DEFAULT = 'value' for DEFAULT column
+        */
+
+        INSERT INTO vehicles(brand,madeby)
+        VALUE ("toyota","japan");
+
+        INSERT INTO vehicles(brand)
+        VALUE ("suzuki");
+
+        INSERT INTO vehicles(madeby)
+        VALUE ("us");
+
+        INSERT INTO vehicles()
+        VALUE();
+
+        /*
+            toyota,japan
+            susuki,china
+            unnamed,us
+            unnamed,china
+        */
+
+        /*
+            Default column never NULL
+        */
+
+    =>Primary key
+        -use for table relationship
+        -unique
+        
+        -Method 1
+            CREATE TABLE IF NOT EXISTS persons(
+                id INT NOT NULL PRIMARY KEY,
+                firstname VARCHAR(255) NOT NULL,
+                lastname VARCHAR(255)
+                age INT
+            );
+        
+        -Methoc 2
+            CREATE TABLE IF NOT EXISTS persons(
+                id INT NOT NULL,
+                firstname VARCHAR(255) NOT NULL,
+                lastname VARCHAR(255),
+                age INT,
+                PRIMARY KEY (id)
+            );
+
+        DESC persons;
+        /*
+            KEY = "PRI" for PRIMARY KEY column
+            primary key column auto NOT NULL
+        */
+    =>AUTO_INCREMENT
+        CREATE TABLE IF NOT EXISTS computers(
+            id INT NOT NULL AUTO_INCREMENT,
+            brand VARCHAR(255),
+            type VARCHAR(255),
+            PRPIMARY Key(id);
+        );
+
+        INSERT INTO computers(brand,type)
+        VALUE('asus','china');
+
+        INSERT INTO computers(brand,type)
+        VALUE(10,'acer',china');
+
+        INSERT INTO computers(brand,type)
+        VALUE('hp',thai');
+
+        INSERT INTO computers(brand,type)
+        VALUE(4,'samsung','korea');
+
+        INSERT INTO computers(brand,type)
+        VALUE('nokia','japan');
+
+        /*
+            1, asus, china
+            10, acer, china
+            11, hp, thai
+            4, samsung, korea
+            12, nokia, japan
+        */
+
+    =>UNIQUE
+
+        
+    =>Add new column
+        -Single    
+            -Method 1
+                ALTER TABLE tablename
+                ADD COLUMN columnname datatype;
+
+            -Method 2
+                ALTER TABLE tablename
+                ADD COLUMN columnname datatype FIRST|AFTER existingcolumnname;
+
+        -Multi    
+            -Method 1
+                ALTER TABLE tablename
+                ADD COLUMN columnname1 datatype,
+                ADD COLUMN columnname2 datatype,
+                ...;
+
+            -Method 2
+                ALTER TABLE tablename
+                ADD COLUMN columnname1 datatype FIRST|AFTER existingcolumnname
+                ADD COLUMN columnname2 datatype FIRST|AFTER existingcolumnname
+                ...;
+
+                /*
+                    FIRST at the first place of the columns.
+                    AFTER take after the existing column.
+                */
+
+            /*
+                Values at the added column are 'NULL' value if it accept NULL value .
+                Values at the added column are '0' value if it do not accept NULL value (NOT NULL) and datatype INT.
+                Values at the added column are '0.00' value if it do not accept NULL value (NOT NULL) and datatype DECIMAL(10,2).
+                Values at the added column are '' value if it do not accept NULL value (NOT NULL) and datatype VARCHAR(size).
+            */        
+    
+    =>Rename Column
+        ALTER TABLE tablename
+        CHANGE COLUMN oldcolumnname newcolumnname datatype;
+
+    =>Modify Column
+        -Single
+            ALTER TABLE tablename
+            MODIFY columnname newdatatype;
+        -Multi
+            ALTER TABLE tablename
+            MODIFY columnname newdatatype,
+            MODIFY columnname newdatatype,
+            ...;
+    =>Move Column
+        ALTER TABLE tablename
+        MODIFY columnname datatype FIRST|AFTER existingcolumnname;
+
+    =>Drop Column
+        -Single
+            ALTER TABLE tablename
+            DROP COLUMN columnname;
+        -Multi
+            ALTER TABLE tablename
+            DROP COLUMN columnname,
+            DROP COLUMN columnname,
+            ...;
+
+    =>Add Primary Key
+        -Method 1
+            ALTER TABLE itaccessories
+            ADD COLUMN id INT NOT NULL AUTO_INCREMENT PRPIMARY KEY FIRST;
+
+        -Method 2
+            ALTER TABLE itaccessories
+            ADD COLUMN id INT NOT NULL AUTO_INCREMENT FIRST,
+            ADD PRIMARY KEY(id);
+
+        SHOW INDEX FROM tablename; // to check key
+
+        /*
+            ---------------------------------------------------
+            Table           Key_name                Column_name
+            ---------------------------------------------------
+            itaccessories   PRIMARY                 id
+        */
+
+    =>Drop Primary Key
+        -AUTO_INCREMENT Primary Key drop with 2 steps
+         1.Remove AUTO_INCREMENT
+         2.DROP Primary Key
+
+        ALTER TABLE itaccessories
+        MODIFY id INT NOT NULL;
+
+        ALTER TABLE itaccessories
+        DROP PRPIMARY KEY;
+
+    =>ADD Unique Key
+
+        -Method 1
+            ALTER TABLE itaccessories
+            ADD UNIQUE(item);
+
+            DESC itaccessories
+                /*
+                    Key = "UNI" for UNIQUE KEY column
+                */
+
+            SHOW INDEX FROM itaccessories;
+                /*
+                    ---------------------------------------------------
+                    Table           Key_name                Column_name
+                    ---------------------------------------------------
+                    itaccessories   item                    item
+                */
+
+            /*
+                -Unique Key can't be duplicate 
+                -'Mouse' and 'mouse' duplicate.
+            */
+
+        -Method 2
+            ALTER TABLE itaccessories
+            ADD CONSTRAINT uc_item_totalqty UNIQUE (item,totalqty);
+
+            DESC itaccessories
+                /*
+                    Key = "MUL" for item
+                */
+
+            SHOW INDEX FROM itaccessories;
+                /*
+                    ---------------------------------------------------
+                    Table           Key_name                Column_name
+                    ---------------------------------------------------
+                    itaccessories   uc_item_totalqty        item
+                    itaccessories   uc_item_totalqty        totalqty
+                */
+
+            /*
+                'marung maung, 20' and 'marung maung, 30' doesn't duplicate.
+            */
+    =>Drop Unique Key
+        -Method 1
+            ALTER TABLE itaccessories
+            DROP INDEX item;
+
+        -Method 2
+            ALTER TABLE itaccessories
+            DROP INDEX uc_item_totalqty;
+
+=>MYSQL Method

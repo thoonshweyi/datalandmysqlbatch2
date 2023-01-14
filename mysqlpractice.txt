@@ -42,3 +42,39 @@ TRUNCATE table members;
 DELETE FROM members;
 
 SELECT * FROM members;
+
+------------------------------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS persons(
+    id INT,
+    firstname VARCHAR(255) NOT NULL,
+    lastname VARCHAR(255),
+    age INT,
+    PRIMARY KEY (id)
+);
+
+SHOW INDEX FROM persons;
+
+ALTER TABLE persons
+ADD COLUMN nrc VARCHAR(20) NOT NULL AFTER age;
+
+DESC persons;
+
+ALTER TABLE persons
+ADD UNIQUE(nrc);
+
+DESC persons;
+
+SHOW INDEX FROM persons;
+
+ALTER TABLE persons
+DROP INDEX nrc;
+
+SHOW INDEX FROM persons;
+
+ALTER TABLE persons
+ADD CONSTRAINT uc_firstname_nrc UNIQUE(firstname,nrc);
+
+DESC persons;
+
+SHOW INDEX FROM persons;
