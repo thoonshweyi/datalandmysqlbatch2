@@ -92,15 +92,26 @@
             -column and value must be order
             -Method 2 must give values to all columns
          */
-        
+         
     =>Select Data
         SELECT * FROM tablename;
         SELECT colume1,colume2,colume3,... FROM tablename;
+        
+        //SELECT column order only affect at result and do not affect original table 
+        
+    =>Alias
+        //result comeout as alias name and just affect result
+        =>Syntax
+            SELECT columnname AS aliasname FROM tablename;
 
-        /*
-            SELECT column order only affect at result and do not affect original table 
-        */
+            SELECT columnname AS 'alias name' FROM tablename;
 
+        =>Exercise
+            SELECT id,firstname AS fstname,lastname AS lstname FROM members; 
+            
+            SELECT id,firstname AS 'first name',lastname AS 'last name' FROM members; 
+
+=>Constraints
     =>NULL & NOT NULL
         CREATE TABLE IF NOT EXISTS students(
             name VARCHAR(10),
@@ -220,6 +231,7 @@
             KEY = "PRI" for PRIMARY KEY column
             primary key column auto NOT NULL
         */
+    
     =>AUTO_INCREMENT
         CREATE TABLE IF NOT EXISTS computers(
             id INT NOT NULL AUTO_INCREMENT,
@@ -252,7 +264,7 @@
         */
 
     =>UNIQUE
-
+=>Ctn Table
         
     =>Add new column
         -Single    
@@ -302,6 +314,7 @@
             MODIFY columnname newdatatype,
             MODIFY columnname newdatatype,
             ...;
+    
     =>Move Column
         ALTER TABLE tablename
         MODIFY columnname datatype FIRST|AFTER existingcolumnname;
@@ -389,8 +402,9 @@
                 */
 
             /*
-                'marung maung, 20' and 'marung maung, 30' doesn't duplicate.
+                'maung maung, 20' and 'maung maung, 30' doesn't duplicate.
             */
+    
     =>Drop Unique Key
         -Method 1
             ALTER TABLE itaccessories
@@ -400,4 +414,181 @@
             ALTER TABLE itaccessories
             DROP INDEX uc_item_totalqty;
 
-=>MYSQL Method
+    =>Clone|Copy Table
+        =>Syntax
+            CREATE TABLE IF NOT EXISTS newtable AS 
+            SELECT * FROM existingtable;
+
+        CREATE TABLE IF NOT EXISTS workers AS
+        SELECT * FROM members;
+
+        DESC workers;
+        // get table structre as members and members table datas  
+        // but PRIMARY KEY AND AUTO_INCREMENT is not include
+        
+=>MYSQL String Method
+
+    =>CONCAT()
+        =>Syntax
+            CONCAT(string,string,...);
+    
+        SELECT CONCAT('Hello',"World"); // HelloWorld
+        SELECT CONCAT('Hello',"...","World"); //Hello...World
+        SELECT CONCAT("Hello",123); // Hello123
+        SELECT CONCAT(10,20); // 1020
+
+        =>Exercise
+            SELECT CONCAT(firstname,' ',lastname) FROM members; // Aye Mya
+            SELECT CONCAT(firstname,' ',lastname) AS fullname FROM members; // Aye Mya
+            SELECT firstname,lastname,CONCAT(firstname,' ',lastname) AS fullname,age FROM members; // Aye, Mya, Aye Mya, 25
+
+        =>CONCAT_WS() - Concat With Seperator
+
+            CONCAT_WS('seperator','string','string',...);
+
+            SELECT CONCAT_WS("-",firstname,lastname,age) FROM members; // Aye-Mya-25
+
+    =>SUBSTRING()
+        =>Syntax
+            SUBSTRING('string',start,space);
+            SUBSTRING('string',start); // from the start index to the end of string
+            SUBSTRING('string',-start); // start count from the end of string
+
+            SUBSTR('string',start,space);
+
+            *MYSQL start index at 1.
+
+        SELECT SUBSTRING("Hello World",0,4); // no result
+        SELECT SUBSTRING("Hello World",1,4); // Hell
+        SELECT SUBSTRING("Hello World",2,4); // ello
+
+        SELECT SUBSTR('MYSQL Online Class',7); // Online Class
+
+        SELECT SUBSTR("MYSQL Online Class",-7); // e Class
+
+        =>Exercise
+
+            SELECT SUBSTRING(address,1,10) FROM PERSONS; // no 10,thit
+            SELECT SUBSTRING(address,1,10) AS 'short address' FROM PERSONS; // no 10,thit
+
+        =>SUBSTRING() With CONCAT()
+            SELECT CONCAT(SUBSTRING(address,1,7),'...') FROM persons; // no.29,m...
+
+    =>REPLACE()
+        =>Syntax
+            REPLACE(originalstring,ori part, newstring);
+            *case sensitive
+            *replace all matches
+
+        SELECT REPLACE("Hello World","Hell","Zer"); //Zero World
+        SELECT REPLACE("Hello World","hell","Zer"); //Hello World // no action
+        SELECT REPLACE("Hello World","o",0); //Hell0 W0rld
+
+        =>Exercise
+            SELECT REPLACE('city',"m","M") FROM persons; // Mandalay, MawlaMyine
+            SELECT REPLACE('city',"m","M") AS capital FROM persons; // Mandalay, MawlaMyine
+
+        =>REPLACE() With SUBSTRING() And CONCAT()
+            SELECT CONCAT(SUBSTRING(REPLACE(address,'n','N'),1,10),'...') AS 'short address'
+            FROM persons; 
+            
+            //No 10,thit...
+
+    =>REVERSE()
+        =>Syntax
+            REVERSE(string)
+
+        SELECT REVERSE("Hello World"); // dlroW olleH
+
+        =>Exercise
+            SELECT REVERSE(firstname) FROM persons; // tuth nit
+
+        =>REVERSE() With CONCAT()
+            SELECT CONCAT(firstname," = ",REVERSE(firstname)) FROM persons; //tin htut = tuth nit
+    
+    =>CHAR_LENGTH()  
+        =>Syntax
+            CHAR_LENGTH(string)
+
+        SELECT CHAR_LENGTH("Hello World")// 11
+
+        =>Exercise
+            SELECT CHAR_LENGTH(firstname) FROM persons; //8
+            SELECT firstname,CHAR_LENGTH(firstname) AS 'total count' FROM persons; //tin htut, 8
+
+        =>CHAR_LENGTH() With CONCAT()
+
+            SELECT CONCAT(firstname," is ",CHAR_LENGTH(firstname)," characters long.") AS length 
+            FROM persons;
+            //maung is 5 characters long.
+
+        *'sql-format.com' to format sql code
+    
+    =>UPPER() & LOWER()
+
+        =>Syntax
+            UPPER(string)
+            LOWER(string)
+
+        SELECT UPPER('Hello World'); // HELLO World
+        SELECT LOWER('Hello World'); // hello World
+
+        =>Exercise
+            SELECT UPPER(firstname) FROM persons; // TIN HTUT
+            SELECT LOWER(CITY) FROM persons; // mandalay
+
+        =>UPPER() and LOWER() With CONCAT()
+
+            SELECT CONCAT(UPPER(firstname)," ",UPPER(firstname)," live in ",LOWER(city)) 
+            FROM persons;
+
+=>Variables
+    1.SYSTEM Variables
+        (i)GLOBAL Variables
+        (ii)SESSION Variables
+    2.User-Defined Variables
+    3.Parameters and Local Variables
+
+    =>SYSTEM Variables
+        SHOW VARIABLES;
+        * @@ prefix to call SYSTEM Variables
+
+        SELECT @@warning_count();   //0 - for phpMyAdmin because of reload
+        SELECT @@error_count();   //0 - for phpMyAdmin because of reload
+
+    =>User-Defined Variables
+        * @ prexis is use to call User-Defined Variables
+
+        -Method 1 (Using SELECT)
+            SELECT @myfirstvar := "Hello Myanmar";
+
+            SELECT @myfirstvar; // NULL - for phpMyAdmin because of reload
+
+            SELECT @myfirstvar := "Hello Myanmar";
+            SELECT @myfirstvar;
+            // @myfirstvar
+                Hello Myanmar
+
+            - overwrite
+                SELECT @myfirstvar := "Save Myanmar";
+                SELECT @myfirstvar;
+                // @myfirstvar
+                    Save Myanmar
+
+        -Method 2 (Using SET)
+            SET @mysecondvar = "Data Land";
+            SELECT @mysecondvar;
+
+            -overwrite
+                SET @mysecondvar = "Hello Thailand";
+                SELECT @mysecondvar;
+
+        SELECT @num1 := 10;
+        SELECT @num2 := 20;
+        SELECT @num1 + @num2; // 30
+
+        SELECT @num1 := '10';
+        SELECT @num2 := '20';
+        SELECT @num1 + @num2; // 30
+
+
