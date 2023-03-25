@@ -36,6 +36,10 @@
             colume3 datatype,
             ...
         );
+
+        =>data type
+            INT 
+            VARCHAR(size)
     
     =>Show table structure
         -Method 1
@@ -99,17 +103,17 @@
         
         //SELECT column order only affect at result and do not affect original table 
         
-    =>Alias
-        //result comeout as alias name and just affect result
-        =>Syntax
-            SELECT columnname AS aliasname FROM tablename;
+        =>Alias
+            //result comeout as alias name and just affect result
+            =>Syntax
+                SELECT columnname AS aliasname FROM tablename;
 
-            SELECT columnname AS 'alias name' FROM tablename;
+                SELECT columnname AS 'alias name' FROM tablename;
 
-        =>Exercise
-            SELECT id,firstname AS fstname,lastname AS lstname FROM members; 
-            
-            SELECT id,firstname AS 'first name',lastname AS 'last name' FROM members; 
+            =>Exercise
+                SELECT id,firstname AS fstname,lastname AS lstname FROM members; 
+                
+                SELECT id,firstname AS 'first name',lastname AS 'last name' FROM members; 
 
 =>Constraints
     =>NULL & NOT NULL
@@ -263,7 +267,13 @@
             12, nokia, japan
         */
 
+    =>FOREIGN KEY
+
     =>UNIQUE
+        ...
+
+    =>CHECK
+    
 =>Ctn Table
         
     =>Add new column
@@ -591,7 +601,7 @@
         SELECT @num2 := '20';
         SELECT @num1 + @num2; // 30
 
-=>Select Data By WHERE Clause
+=>Select Data By 'WHERE' Clause
     =>Syntax    
         SELECT * FROM tablename
         WHERE condition;
@@ -610,8 +620,11 @@
         >=                  - Greater than or equal                
         <=                  - Less than or equal
         BETWEEN AND         - Between in a centain range inclusive
+        NOT BETWEEN AND     - Not Between in a centain range inclusive
         IN                  - To specify multiple possible values for a column
+        NOT IN              - Not multiple possible values for a column
         LIKE                - Search for a pattern
+        NOT LIKE            - Not search patern
 
         AND                 - must all conditions true
         OR                  - one condition true
@@ -627,14 +640,6 @@
 
             SELECT * FROM customers
             WHERE firstname = "Tin Htut";
-
-            SELECT * FROM customers
-            WHERE firstname LIKE "tin htut";
-
-            SELECT * FROM customers
-            WHERE firstname LIKE "Tin Htut";
-
-
 
             SELECT id, firstname,lastname,city,amount FROM customers
             WHERE amount = 200000; 
@@ -687,8 +692,12 @@
                 WHERE NOT condition;
 
             SELECT * FROM customers
-            WHERE NOT country = "Myanmar";
+            WHERE NOT country = "myanmar";
+
         => AND, OR, NOT
+            SELECT * FROM customers
+            WHERE country = 'myanmar' AND city = 'bago' OR city = 'mandalay';
+
             SELECT * FROM customers
             WHERE country = 'myanmar' AND (city = 'bago' OR city = 'mandalay');
 
@@ -702,11 +711,393 @@
             SELECT id, firstname, lastname, age, amount, city FROM customers
             WHERE city = 'mandalay' AND amount BETWEEN 200000 AND 300000;
 
-            
-            
+            => NOT BETWEEN AND  
+                SELECT id, firstname, lastname, age, amount, city FROM customers
+                WHERE amount NOT BETWEEN 200000 AND 300000;
 
+                SELECT id, firstname, lastname, age, amount, city FROM customers
+                WHERE amount NOT BETWEEN 200000 AND 300000 AND city = "yangon";
             
+        => IN
+            //result = 1
+            SELECT 10 IN (10,20,30,40,50,60);
+            
+            //result = 0
+            SELECT 10 IN (100,200,300,400,500,600);
+
+
+            //result = 1
+            SELECT "aung aung" IN ("maung maung","aung aung","zaw zaw");
+            SELECT "aung aung" IN ("maung maung","AUNG AUNG","zaw zaw");
+
+            //result = 0
+            SELECT "aung" IN ("maung maung","aung aung","zaw zaw");
+
+            => NOT IN
+                //result = 0
+                SELECT 10 NOT IN (10,20,30,40,50,60);
+                
+                //result = 1
+                SELECT 10 NOT IN (100,200,300,400,500,600);
+
+                //result = 0
+                SELECT "aung aung" NOT IN ("maung maung","aung aung","zaw zaw");
+                SELECT "aung aung" NOT IN ("maung maung","AUNG AUNG","zaw zaw");
+
+            =>Exercise
+                SELECT id, firstname, lastname, age, amount, city FROM customers
+                WHERE city = "mandalay";
+
+                SELECT id, firstname, lastname, age, amount, city FROM customers
+                WHERE city IN ("mandalay");
+
+                SELECT id, firstname, lastname, age, amount, city FROM customers
+                WHERE city = "mandalay" OR city = "yangon";
+
+                SELECT id, firstname, lastname, age, amount, city FROM customers
+                WHERE city IN ("mandalay","yangon");
+
+
+                SELECT id, firstname, lastname, age, amount, city FROM customers
+                WHERE city != "mandalay";
+
+                SELECT id, firstname, lastname, age, amount, city FROM customers
+                WHERE city NOT IN ("mandalay");
+
+                SELECT id, firstname, lastname, age, amount, city FROM customers
+                WHERE NOT (city = "mandalay" OR city = "yangon");
+
+                SELECT id, firstname, lastname, age, amount, city FROM customers
+                WHERE city NOT IN ("mandalay","yangon");
+
+        =>LIKE
+            =>Syntax
+                SELECT column1,column2,column3,...
+                FROM tablename
+                WHERE column LIKE "pattern";
+
+            =>LIKE Operator's pattern (7 types)
+            
+                WHERE column LIKE "a%"              Find any value that start with "a"
+                WHERE column LIKE "%a"              Find any value that end with "a"
+                WHERE column LIKE "%or%"            Find any value that have "or" in any position 
+                WHERE column LIKE "a_%"             Find any value that start with "a" and at least two characters in length
+                WHERE column LIKE "a__%"            Find any value that start with "a" and at least three characters in length
+                WHERE column LIKE "_r%"             Find any value that have "r" in the second position
+                WHERE column LIKE "a%o"             Find any value that start with "a" and end with "o"
+
+            =>Exercise
+
+                SELECT * FROM customers
+                WHERE firstname LIKE "tin htut";
+
+                SELECT * FROM customers
+                WHERE firstname LIKE "Tin Htut";
+
+                SELECT * FROM customers
+                WHERE amount LIKE 200000;
+
+                =>NOT LIKE
+                
+                    SELECT id, firstname, lastname, city, country FROM customers
+                    WHERE city NOT LIKE "mandalay";
+
+                    SELECT id, firstname, lastname, city, country FROM customers
+                    WHERE NOT city LIKE "mandalay";
+
+                    SELECT id, firstname, lastname, city, country FROM customers
+                    WHERE amount NOT LIKE 200000;
+
+                SELECT id, firstname, lastname, age, city FROM customers
+                WHERE  firstname LIKE "m%";
+                //the person whose firstname start with "m"
+
+                SELECT id, firstname, lastname, age, city FROM customers
+                WHERE  firstname LIKE "%g";
+                //the person whose firstname end with "g"
+
+                SELECT id, firstname, lastname, age, city FROM customers
+                WHERE  firstname LIKE "%zaw%";
+                //the person whose firstname have "zaw" in any position
+                // 'zaw zaw' come out
+
+                SELECT id, firstname, lastname, age, city FROM customers
+                WHERE  firstname LIKE "a__%";
+                //the person whose firstname start with "a" and at least 3 characters in length
+
+                SELECT id, firstname, lastname, age, city FROM customers
+                WHERE  firstname LIKE "_a%";
+                //the person whose firstname have "zaw" in the second position
+
+                SELECT id, firstname, lastname, age, city FROM customers
+                WHERE  firstname LIKE "a%g";
+                //the person whose firstname start with "a"  and end with "g"
+
+            =>Exercise ( LIKE '____')
+                SELECT * FROM customers
+                WHERE  amount LIKE "____";
+                // exactly XXXX , 1000
+
+                SELECT * FROM customers
+                WHERE  amount LIKE "_____";
+                // exactly XXXXX , 10000
+            
+            =>Exesrcise ( LIKE '%')
+                - % is anything
+
+                SELECT * FROM customers
+                WHERE firstname LIKE "%";
+                //all 40 rows come out
+
+                SELECT * FROM customers
+                WHERE firstname LIKE "\_%";
+                // result = _facebook
+
+                SELECT * FROM customers
+                WHERE firstname LIKE "%\_%";
+                // result = _facebook, face_book
+
+                SELECT * FROM customers
+                WHERE firstname LIKE "%\%%";
+                // result = 10%happy
+
+=>MODULE (+ - * / %)
+    SELECT id, firstname, lastname, city, country FROM customers
+    WHERE age + 1 = 18;
+    //*result age = 17
+
+    SELECT id, firstname, lastname, city, country FROM customers
+    WHERE age - 5 = 25;
+    //*result age = 30
+
+    SELECT id, firstname, lastname, city, country FROM customers
+    WHERE age * 2 = 50;
+    //*result age = 25
+
+    SELECT id, firstname, lastname, city, country FROM customers
+    WHERE amount / 2 = 100000;
+    //*result amount = 200000
+
+    SELECT id, firstname, lastname, city, country FROM customers
+    WHERE age % 2 = 0;
+    //*result age = even number
+
+=> ORDER BY' keyword
+    =>Syntax
+        SELECT column1,colume2,column3... FROM tablename
+        WHERE condition
+        ORDER BY column ASC|DESC;
+
+        ASC = ascending - from a - z
+                        - from min - max
+
+        DESC = descending - fom z - a
+                         - from max - min
+
+        *derault ASC
+
+    =>Exercise
+        SELECT * FROM customers
+        ORDER BY firstname ASC;
+
+        SELECT * FROM customers
+        ORDER BY firstname;
+
+        SELECT * FROM customers
+        ORDER BY firstname DESC;
+
+        SELECT * FROM customers
+        ORDER BY amount ASC;
+
+        SELECT * FROM customers
+        ORDER BY amount DESC;
+
+        SELECT * FROM customers
+        WHERE amount > 200000
+        ORDER BY amount ASC;
+
+        SELECT * FROM customers
+        ORDER BY firstname,age;
+        // 2 columns "ORDER BY" sort row as the second column when the first column values are same
+
+        SELECT id, firstname, lastname, amount, city FROM customers
+        ORDER BY 5 DESC;
+        // sort as city
+
+=>"LIMIT" clause
+    =>Syntax
+        SELECT column1, column2, column3... FROM tablename
+        WHERE condition
+        ORDER BY column
+        LIMIT number;
+
+        *WHERE is optional
+        *ORDER BY is optional
+
+    =>Exercise
+        SELECT id, firstname, lastname, city, country FROM customers
+        LIMIT 20;
+
+        SELECT id, firstname, lastname, city, country FROM customers
+        WHERE age > 25
+        LIMIT 5;
+
+        SELECT id, firstname, lastname, age, city FROM customers
+        WHERE age > 25
+        LIMIT 5;
+
+        SELECT id, firstname, lastname, age, city FROM customers
+        WHERE age > 25
+        ORDER BY city
+        LIMIT 5;
+
+=>Aggregate Function
+
+    =>Useful calculator Function
+        - COUNT()
+        - SUM()
+        - AVG()
+        - MIN()
+        - MAX()
+
+    =>COUNT()
+        =>Syntax
+            SELECT COUNT(column) FROM tablename
+            WHERE condition;
+        
+            *WHERE is optional
+
+        =>Exercise
+            SELECT COUNT(amount) FROM customers
+            WHERE amount > 300000;
+            //*result = 10
+
+            SELECT COUNT(*) FROM customers
+            WHERE firstname = 'aung';
+            //*result = 1
+    
+    =>SUM()
+        =>Syntax
+            SELECT SUM(column) FROM tablename
+            WHERE condition;
+        
+            *WHERE is optional
+        
+
+        =>Exercise
+            SELECT SUM(amount) FROM customers
+            WHERE city = 'mandalay';
+
+    =>AVG()
+        =>Syntax
+            SELECT AVG(column) FROM tablename
+            WHERE condition;
+
+            *WHERE is optional
+    
+        =>Exercise
+            SELECT AVG(amount) FROM customers
+            WHERE city = 'yangon';
+            //*result = 111000.0000
+   
+    =>MIN()
+        =>Syntax
+            SELECT MIN(column) FROM tablename
+            WHERE condition;
+           
+            *WHERE is optional
+
+        =>Exercise
+            SELECT MIN(amount) FROM customers
+            WHERE city = 'yangon';
+
+    =>MAX()
+        =>Syntax
+            SELECT MAX(column) FROM tablename
+            WHERE condition;
+
+            *WHERE is optional
+
+        =>Exercise
+            SELECT MAX(amount) FROM customers
+            WHERE city = 'yangon';
+
+    =>Exercise (do & don't)
+        
+        SELECT COUNT(*), MAX(amount) FROM customers
+        WHERE city = "yangon";
+        //*result = 8, 250000
+        --------------------------------
+        SELECT MAX(amount) FROM customers;
+        //*result = 800000
+
+        SELECT * FROM customers
+        WHERE amount = 800000;
+
+        SELECT * FROM customers
+        WHERE amount = (SELECT MAX(amount) FROM customers);
+
+        SELECT COUNT(*) FROM customers
+        WHERE amount = (SELECT MAX(amount) FROM customers);
+        ________________________________________________________________________________________
+        //*Error        
+        SELECT firstname, MIN(amount) FROM customers;
+
+        - cause version no error
+        - *result = aung, 17000
+    
+=>'DISTINCT' statement
+    =>Syntax
+        SELECT DISTINCT column1, column2, ...
+        FROM tablename
+        ORDER BY column
+
+        *ORDER BY is optional
+
+    =>Exercise
+        SELECT DISTINCT city FROM customers;
+        //*result = different 7 cities
+
+        SELECT DISTINCT city  FROM customers
+        ORDER BY city;
+        //*result = different 7 cities by sorting ascending
+
+        //Error (Note: Only DISTINCT column should contain in ORDER BY column)
+        SELECT DISTINCT city  FROM customers
+        ORDER BY age;
+
+        
+        
+        SELECT DISTINCT age,city  FROM customers
+        ORDER BY age;
+        //*result = only collect if two column values are same
+
+        SELECT COUNT(DISTINCT city) FROM customers;
+
+=>String datatype
+
+    Data Types                          Description
+
+1.  CHAR(size)                          A fixed length string. size -> 0 - 255
+2.  VARCHAR(size)                       A variable length string. size -> 0 - 255
+
+3.  TEXT                                Hold a string with maximun size 65kb. (65,xxx)
+4.  TINYTEXT                            Hold a string with maximum size 255b  (255 bytes)    
+5.  MEDIUMTEXT                          Hold a string with maximum size 16mb  (16,xxx,xxx)
+6.  LONGTEXT                            Hold a string with maximum size 4gb   (4,xxx,xxx,xxx)
+
+7.  BINARY(size)                        Equal to CHAR(), but stores binary byte string.
+8.  VARBINARY(size)                     Equal to VARCHAR(), but stores binary byte string.
+
+9.  TIMYBLOB                            BLOB (Binary Large Object)
+10. BLOB
+11. MEDIUMBLOB
+12. LONGBLOB
+
+13. ENUM("val1","val2",...)
+14. SET("val1","val2",...)
+
         
         
 
-
+    

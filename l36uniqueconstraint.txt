@@ -1,0 +1,270 @@
+=>UNIQUE Constraint
+
+= Constraints
+PRIMARY KEY
+FOREIGN KEY
+NOT NULL
+UNIQUE
+DEFAULT
+CHECK
+
+=Syntax ( Single Column )
+
+CREATE TABLE tablename(
+    column1 datatype,
+    column2 datatype UNIQUE,
+    column3 datatype,
+    ...
+);
+
+=Syntax ( Multi Column )
+CREATE TABLE tablename(
+    column1 datatype,
+    column2 datatype,
+    column3 datatype,
+    ...
+    UNIQUE(column1,column2)
+);
+-------------------------------------------
+=EXERCISE ( Single )
+
+CREATE TABLE IF NOT EXISTS countries(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    capital VARCHAR(50) NOT NULL,
+    currencyname VARCHAR(30),
+    isocode VARCHAR(10)
+);
+// isocode (MMK)
+
+DESC countries; 
+//name -> Key = UNI
+
+SHOW INDEX FROM countries;
+/*
+Table       Key_name        Column_name
+countries   PRIMARY         id
+countries   name            name
+*/
+
+=>DROP UNIQUE KEY
+ALTER TABLE countries DROP INDEX name;
+
+DESC countries;
+SHOW INDEX FROM countries;
+
+DROP TABLE IF EXISTS countries;
+
+CREATE TABLE IF NOT EXISTS countries(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    capital VARCHAR(50) NOT NULL,
+    currencyname VARCHAR(30),
+    isocode VARCHAR(10),
+    UNIQUE(name)
+);
+DESC countries;
+SHOW INDEX FROM countries;
+SHOW INDEX IN countries;
+
+INSERT INTO countries(name,capital,currencyname,isocode)
+VALUES ("myanmar","naypyidaw","myanmar kyat","mmk"),
+        ("thailand","bangkok","thai baht","thb"),
+        ("indonesia","jakata","indonesia rupiee","idr"),
+        ("srilanka","colombo","srilanka rupiee","lkr");
+
+SELECT * FROM countries;
+
+*error ( Duplicate entry 'myanmar' for key 'name' )
+INSERT INTO countries(name,capital,currencyname,isocode)
+VALUES ("myanmar","yangon","burmese kyat","mmk");
+
+*error ( Duplicate entry 'Myanmar' for key 'name' )
+INSERT INTO countries(name,capital,currencyname,isocode)
+VALUES ("Myanmar","yangon","burmese kyat","mmk");
+
+*error ( Duplicate entry 'Thailand' for key 'name' )
+UPDATE countries SET name = "Thailand" WHERE id = 4;
+----------------------------------------------------
+= EXERCISE ( Muli )
+
+CREATE TABLE IF NOT EXISTS cashiers(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    phone VARCHAR(15) UNIQUE
+);
+
+DESC cashiers;
+SHOW INDEX FROM cashiers;
+
+=>DROP UNIQUE Key
+ALTER TABLE cashiers DROP INDEX phone;
+ALTER TABLE cashiers DROP INDEX email;
+
+DESC cashiers;
+SHOW INDEX FROM cashiers;
+
+DROP TABLE IF EXISTS cashiers;
+
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ("su su","susu@gmail.com",12345,"0911111"),
+        ("yu yu","yuyu@gmail.com",12345,"0922222"),
+        ("hla hla","hlahla@gmail.com",12345,"0933333"),
+        ("tun tun","tuntun@gmail.com",12345,"0944444");
+
+SELECT * FROM cashiers;
+
+*error ( Duplicate entry 'susu@gmail.com' for key 'email' ) 
+INSERT INTO cashiers(name,email,password,phone)
+VALUE ("ma ma","susu@gmail.com",12345,"0955555");
+
+*error ( Duplicate entry '0944444' for key 'phone' )
+INSERT INTO cashiers(name,email,password,phone)
+VALUE ("ma ma","mama@gmail.com",12345,"0944444");
+
+*error ( Duplicate entry 'yuyu@gmail.com' for key 'email' )
+INSERT INTO cashiers(name,email,password,phone)
+VALUE ("ma ma","yuyu@gmail.com",12345,"0933333");
+
+ALTER TABLE cashiers DROP INDEX phone; 
+SHOW INDEX FROM cashiers;
+
+INSERT INTO cashiers(name,email,password,phone)
+VALUE ("ma ma","mama@gmail.com",12345,"0933333");
+
+SELECT * FROM cashiers;
+//* id 8 because id update even if transition fail
+
+// DROP TABLE IF EXISTS cashiers;
+
+-----------------------------------------------------
+
+=> UNIQUE with CONSTRAINT 
+
+CREATE TABLE IF NOT EXISTS accountants(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    phone VARCHAR(15),
+    UNIQUE(email,phone)
+);
+DESC accountants; // email -> Key = MUL
+SHOW INDEX FROM accountants;
+/*
+Table       Key_name        Column_name
+
+countries   PRIMARY         id
+countries   email           email
+countries   email           phone
+*/
+
+=>DROP UNIQUE KEY
+*error (Can't DROP INDEX `phone`; check that it exists)
+ALTER TABLE accountants
+DROP INDEX phone;
+
+ALTER TABLE accountants
+DROP INDEX email;
+
+DESC accountants;
+SHOW INDEX FROM accountants;
+
+DROP TABLE IF EXISTS accountants;
+
+INSERT INTO accountants(name,email,password,phone)
+VALUES ("su su","susu@gmail.com",12345,"0911111"),
+        ("yu yu","yuyu@gmail.com",12345,"0922222"),
+        ("hla hla","hlahla@gmail.com",12345,"0933333"),
+        ("tun tun","tuntun@gmail.com",12345,"0944444");
+
+SELECT * FROM accountants;
+
+INSERT INTO accountants(name,email,password,phone)
+VALUE ("ma ma","susu@gmail.com",12345,"0955555");
+
+INSERT INTO accountants(name,email,password,phone)
+VALUE ("ma ma","mama@gmail.com",12345,"0944444");
+
+INSERT INTO accountants(name,email,password,phone)
+VALUE ("ma ma","yuyu@gmail.com",12345,"0933333");
+
+*error ( Duplicate entry 'tuntun@gmail.com-0944444' for key 'email' )
+INSERT INTO accountants(name,email,password,phone)
+VALUE ("ma ma","tuntun@gmail.com",12345,"0944444");
+
+
+
+SELECT * FROM accountants;
+
+
+CREATE TABLE IF NOT EXISTS financceofficers(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    phone VARCHAR(15),
+    UNIQUE(name),
+    CONSTRAINT uc_email_phone UNIQUE(email,phone)
+);
+// naming 
+email_phone
+uc_email_phone - uc User Constraint
+
+DESC financceofficers; // email -> Key = MUL
+SHOW INDEX FROM financceofficers;
+/*
+Table       Key_name        Column_name
+
+countries   PRIMARY         id
+countries   uc_email_phone  email
+countries   uc_email_phone  phone
+*/
+
+=>DROP UNIQUE KEY
+*error (Can't DROP INDEX `phone`; check that it exists)
+ALTER TABLE financceofficers
+DROP INDEX phone;
+
+ALTER TABLE financceofficers
+DROP INDEX uc_email_phone;
+
+DESC financceofficers;
+SHOW INDEX FROM financceofficers;
+
+DROP TABLE IF EXISTS financceofficers;
+
+INSERT INTO financceofficers(name,email,password,phone)
+VALUES ("su su","susu@gmail.com",12345,"0911111"),
+        ("yu yu","yuyu@gmail.com",12345,"0922222"),
+        ("hla hla","hlahla@gmail.com",12345,"0933333"),
+        ("tun tun","tuntun@gmail.com",12345,"0944444");
+
+SELECT * FROM financceofficers;
+
+INSERT INTO financceofficers(name,email,password,phone)
+VALUE ("ma ma","susu@gmail.com",12345,"0955555");
+
+INSERT INTO financceofficers(name,email,password,phone)
+VALUE ("nyi ma lay","mama@gmail.com",12345,"0944444");
+
+INSERT INTO financceofficers(name,email,password,phone)
+VALUE ("friend","yuyu@gmail.com",12345,"0933333");
+
+*error ( Duplicate entry 'tuntun@gmail.com-0944444' for key 'uc_email_phone' )
+INSERT INTO financceofficers(name,email,password,phone)
+VALUE ("ko gyi","tuntun@gmail.com",12345,"0944444");
+
+*error ( Duplicate entry 'yuyu@gmail.com-0933333' for key 'uc_email_phone')
+INSERT INTO financceofficers(name,email,password,phone)
+VALUE ("maung lay","yuyu@gmail.com",12345,"0933333");
+
+SELECT * FROM financceofficers;
+
+
+// Knowledge
+MPU = Myanmar Payment Union (Crosssite Platform for all banks)
+
+19CT

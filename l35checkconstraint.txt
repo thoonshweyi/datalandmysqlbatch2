@@ -1,0 +1,44 @@
+=>Check
+
+CREATE TABLE IF NOT EXISTS purchases(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    ordinaryprice DECIMAL(10,2) NOT NULL,
+    sellprice DECIMAL(10,2) NOT NULL
+);
+DESC purchases;
+
+INSERT INTO purchases(name,ordinaryprice,sellprice) 
+VALUE ("redbull",400,1000);
+
+INSERT INTO purchases(name,ordinaryprice,sellprice) 
+VALUE ("sponsor",-300,600);
+
+SELECT * FROM purchases;
+
+DROP TABLE IF EXISTS purchases;
+
+CREATE TABLE IF NOT EXISTS purchases(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    ordinaryprice DECIMAL(10,2) NOT NULL CHECK(ordinaryprice >= 0),
+    sellprice DECIMAL(10,2) NOT NULL CHECK(sellprice >= 0)
+);
+DESC purchases; // nothing special
+
+INSERT INTO purchases(name,ordinaryprice,sellprice) 
+VALUES ("redbull",400,1000),
+        ("sponsor",300,500),
+        ("deedo",100,200);
+
+SELECT * FROM purchases;
+
+*error
+INSERT INTO purchases(name,ordinaryprice,sellprice) 
+VALUE ("jo-ey",-1,400);
+
+*error
+INSERT INTO purchases(name,ordinaryprice,sellprice) 
+VALUE ("jo-ey",300,-400);
+
+-----------------------------------------------------
