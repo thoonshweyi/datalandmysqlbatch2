@@ -78,3 +78,63 @@ ADD CONSTRAINT uc_firstname_nrc UNIQUE(firstname,nrc);
 DESC persons;
 
 SHOW INDEX FROM persons;
+
+CREATE TABLE IF NOT EXISTS customers(
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    name VARCHAR(60),
+    address VARCHAR(120),
+    status VARCHAR(1) DEFAULT "1"
+);
+
+CREATE TABLE IF NOT EXISTS customerphones(
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    phone VARCHAR(20),
+    customer_id INT,
+    FOREIGN KEY(customer_id) REFERENCES customers(id)
+);
+
+CREATE TABLE IF NOT EXISTS customerpoints(
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    points INT,
+    customer_id INT,
+    FOREIGN KEY(customer_id) REFERENCES customers(id)
+);
+
+INSERT INTO customers(name,address)
+VALUES ("aung aung","yangon"),
+        ("maung maung","mandalay"),
+        ("mya mya","bago"),
+        ("hla hla","taung gyi"),
+        ("min thant","pin ta ya"),
+        ("mu mu","yangon");
+
+SELECT * FROM customers;
+
+INSERT INTO customerphones(phone,customer_id)
+VALUES ("0912345",1),
+        ("0912346",1),
+        ("0987654",3),
+        ("0987655",4);
+
+SELECT * FROM customerphones;
+
+INSERT INTO customerpoints(points,customer_id)
+VALUES (100,1),
+        (200,1),
+        (300,2),
+        (250,4);
+
+SELECT * FROM customerpoints;
+
+=>REPORT
+SELECT customers.id,name,phone 
+FROM customers
+LEFT JOIN customerphones 
+    ON customers.id = customerphones.customer_id;
+
+SELECT customers.id,name,phone,points 
+FROM customers
+LEFT JOIN customerphones 
+    ON customers.id = customerphones.customer_id
+LEFT JOIN customerpoints 
+    ON customers.id = customerpoints.customer_id;

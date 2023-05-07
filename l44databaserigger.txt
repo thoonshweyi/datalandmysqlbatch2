@@ -1,0 +1,252 @@
+=>Database Trigger
+
+=>trigger_time
+BEFORE
+AFTER
+
+=>trigger_event
+INSERT
+UPDATE
+DELETE
+
+=Syntax
+DELIMITER $$
+
+CREATE TRIGGER triggername
+triggertime triggerevent ON tablename FOR EACH ROW
+BEGIN
+    -- statements;
+END$$
+
+DELIMITER ;
+
+*can'trigger_event
+DELIMITER;
+*use with space
+DELIMITER ;
+
+=>Statement (IF-THEN-ELSE Statement)
+
+IF condition1 THEN
+    code to executed
+ELSEIF condition2 THEN
+    code to executed
+ELSEIF condition3 THEN
+    code to executed
+ELSE
+    code to executed
+END IF;
+
+
+--------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS borrowers(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50),
+    password VARCHAR(255),
+    age INT,
+    status INT DEFAULT 1
+);
+
+DESC borrowers;
+
+INSERT INTO borrowers(username,password,age)
+VALUES ('aungaung',MD5(SHA('123456')),20),
+        ('zawzaw',SHA(MD5('123456')),30);
+
+INSERT INTO borrowers(username,password,age)
+VALUES ('maungmaung',MD5(SHA('123456')),17),
+        ('hlahla',SHA(MD5('123456')),60);
+
+SELECT * FROM borrowers;
+
+*encrypt methods
+SHA()
+MD5()
+MD5(SHA())
+SHA(MD5())
+-------------------------------------------------
+
+=>BEFORE INSERT
+
+DELIMITER // 
+
+CREATE TRIGGER borrowerstatus_bfc
+BEFORE INSERT
+ON borrowers FOR EACH ROW
+BEGIN
+    IF NEW.age < 18 THEN SET NEW.status = 2;
+    END IF;
+END;//
+DELIMITER ;
+
+SHOW TRIGGERS;
+
+DROP TRIGGER IF EXISTS borrowerstatus_bfc;
+
+SHOW TRIGGERS;
+
+INSERT INTO borrowers(username,password,age)
+VALUES ('zawzaw',MD5(SHA('123456')),28);
+
+SELECT * FROM borrowers;
+
+INSERT INTO borrowers(username,password,age)
+VALUES ('hlahla',MD5(SHA('123456')),14);
+
+SELECT * FROM borrowers;
+
+INSERT INTO borrowers(username,password,age)
+VALUES ('umya',MD5(SHA('123456')),65);
+
+SELECT * FROM borrowers;
+
+DROP TRIGGER IF EXISTS borrowerstatus_bfc;
+
+SHOW TRIGGERS;
+--------------------------------------------------------
+DELIMITER // 
+
+CREATE TRIGGER borrowerstatus_bfc
+BEFORE INSERT
+ON borrowers FOR EACH ROW
+BEGIN
+    IF NEW.age < 18 THEN SET NEW.status = 2;
+    ELSEIF NEW.age > 45 THEN SET NEW.status = 3;
+    END IF;
+END; //
+
+DELIMITER ;
+
+SHOW TRIGGERS;
+
+INSERT INTO borrowers(username,password,age)
+VALUES ('myamya',MD5(SHA('123456')),28);
+
+INSERT INTO borrowers(username,password,age)
+VALUES ('ayeaye',MD5(SHA('123456')),14);
+
+INSERT INTO borrowers(username,password,age)
+VALUES ('uba',MD5(SHA('123456')),70);
+
+SELECT * FROM borrowers;
+
+DROP TRIGGER IF EXISTS borrowerstatus_bfc;
+
+SHOW TRIGGERS;
+---------------------------------------------------
+=>MySQL Error Message
+
+DELIMITER // 
+
+CREATE TRIGGER borrowerstatus_bfc
+BEFORE INSERT
+ON borrowers FOR EACH ROW
+BEGIN
+    IF NEW.age < 18 THEN 
+    SIGNAL SQLSTATE "45000"
+    SET MESSAGE_TEXT = "Ohh...we cannot provide loan for this user";
+    END IF;
+END;//
+DELIMITER ;
+
+SHOW TRIGGERS;
+
+INSERT INTO borrowers(username,password,age)
+VALUES ('thargi',MD5(SHA('123456')),25);
+
+INSERT INTO borrowers(username,password,age)
+VALUES ('utookpe',MD5(SHA('123456')),55);
+
+INSERT INTO borrowers(username,password,age)
+VALUES ('thura',MD5(SHA('123456')),13);
+
+SELECT * FROM borrowers;
+
+DROP TRIGGER IF EXISTS borrowerstatus_bfc;
+SHOW TRIGGERS;
+--------------------------------------------
+=>AFTER INSERT
+
+CREATE TABLE IF NOT EXISTS borrowercreators(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    borrower_id INT,
+    created_at TIMESTAMP DEFAULT NOW(),
+    created_by VARCHAR(50)
+);
+DESC borrowercreators;
+
+DELIMITER //
+
+CREATE TRIGGER borrowercreator_afc
+AFTER INSERT
+ON borrowers FOR EACH ROW
+BEGIN
+    DECLARE dbuser VARCHAR(50);
+    SELECT USER() INTO dbuser;
+
+    INSERT INTO borrowercreators(borrower_id,created_by)
+    VALUE(NEW.id,dbuser);
+END; //
+
+DELIMITER ;
+
+SELECT * FROM borrowers;
+SELECT * FROM borrowercreators;
+
+INSERT INTO borrowers(username,password,age)
+VALUE('yu  yu',MD5(SHA("12345")),23);
+
+SELECT * FROM borrowers;
+SELECT * FROM borrowercreators;
+
+INSERT INTO borrowers(username,password,age)
+VALUES ('thuzar',MD5(SHA("12345")),24),
+        ('zinmar',MD5(SHA("12345")),18),
+        ('myoaung',MD5(SHA("12345")),65);
+
+SELECT * FROM borrowers;
+SELECT * FROM borrowercreators;
+
+SHOW TRIGGERS;
+DROP TRIGGER IF EXISTS borrowerstatus_bfc;
+DROP TRIGGER IF EXISTS borrowercreator_afc;
+--------------------------
+
+DESC borrowers;
+
+CREATE TABLE IF NOT EXISTS reminders(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    borrower_id INT,
+    message VARCHAR(255) NOT NULL
+);
+
+DESC reminders;
+
+DELIMITER //
+
+CREATE TRIGGER IF NOT EXISTS borroweragereminder_afc
+AFTER INSERT
+ON borrowers FOR EACH ROW
+BEGIN
+    IF NEW.age IS NULL THEN
+        INSERT INTO reminders(borrower_id,message)
+        VALUE (NEW.id,CONCAT("DEAR ",NEW.username, ", please update your age."));
+    END IF;
+END; //
+
+DELIMITER ;
+
+SELECT * FROM borrowers;
+SELECT * FROM borrowercreators;
+SELECT * FROM reminders;
+
+INSERT INTO borrowers(username,password)
+VALUE ("thura",MD5(SHA("12345")));
+
+INSERT INTO borrowers(username,password)
+VALUE ("thura",MD5(SHA("12345")));
+
+SELECT * FROM borrowers;
+SELECT * FROM borrowercreators;
+SELECT * FROM reminders;
