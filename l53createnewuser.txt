@@ -1,0 +1,102 @@
+=>PHP Myadmin
+
+localhost/phpmyamdin > Click "User accounts"
+Click "Add user account"
+
+User name : User text field   : koaung
+Host      : localhost         : localhost
+Password  : User text field   : password12345
+Re-type   :                   : password12345
+Authentication Plugin         : Caching sha2 authentication
+
+
+Data = Check All
+Structure = Check All
+Administrator = Check All
+Resource limits = 0 0 0 0
+SSL = Require None
+
+=>Terminal
+
+Linux
+ctrl+alt+text
+
+Windows
+window+r
+cmd
+
+=>Linux
+
+mysql -u root -p 
+or 
+mysql -u root -p -h 127.0.0.1
+
+root
+password12345
+
+=mysql logout
+exit
+or 
+\q
+
+=>MYSQL command line with XAMPP for window
+cd\
+cd XAMPP
+cd mysql
+cd bin
+mysql.exe
+mysql -u root -password
+or
+mysql -u root -p -h 127.0.0.1
+
+=>MYSQL command line with WAMP for window
+cd\
+cd wamp
+cd bin
+cd mysql
+mysql.exe
+mysql -u root -p
+or
+mysql -u root -p -h 127.0.0.1
+
+=Current Usser
+SELECT USER();
+SELECT CURRENT_USER();
+
+=List all user 
+SELECT USER FROM mysql.user;
+SELECT USER,HOST FROM mysql.user;
+
+=Create User
+
+CREATE USER "kohtut"@'localhost' IDENTIFIED BY "password12345@#$";
+or
+CREATE USER "kotha"@'localhost' IDENTIFIED WITH MYSQL_NATIVE_PASSWORD BY "password12345@#$";
+
+SELECT USER FROM mysql.user;
+SELECT USER();
+
+=>Change User's Password
+ALTER USER "kohtut"@'localhost' IDENTIFIED WITH MYSQL_NATIVE_PASSWORD BY "password12345@#@";
+ALTER USER "kohtut"@'localhost' IDENTIFIED BY "password12345@#@";
+
+=>Granting a User Permission (Note: *.* mean database.table)
+GRANT ALL PRIVILEGES ON *.* To "kohtut"@"localhost" WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+or 
+GRANT CREATE,ALTER,DROP,INSERT,UPDATE,DELETE,SELECT,REFERENCES ON *.* TO "kotha"@"localhost" WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+GRANT CREATE,ALTER,DROP,INSERT,UPDATE,DELETE,SELECT,REFERENCES ON wdf4102.* TO "kotha"@"localhost" WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+=>REVIEW a user"s current Permission
+SHOW TRANTS FOR "kotha"@"localhost";
+
+=>Drop User
+DROP USER "kotha"@"localhost";
+
+SELECT USER();
+SELECT USER FROM mysql.user;
+-------------------------------------------------
+19SFN

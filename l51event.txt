@@ -1,0 +1,111 @@
+=>Event
+
+Event Type (Schedule)
+(i) One Time Event
+(ii) Recurring Event
+
+=>To see event was ON/OFF
+SHOW PROCESSLIST;
+
+
+SET GLOBAL event_scheduler = ON;
+SET GLOBAL event_scheduler = OFF;
+
+=>Syntax
+Method 1
+
+CREATE EVENT eventname
+ON SCHEDULT AT timestamp
+DO
+statements
+-------------------------
+Method 2
+
+CREATE EVENT eventname
+ON SCHEDULT AT timestamp
+ON COMPLETION PRESERVE
+DO
+statements
+
+*can trace event history
+
+(ii) Recurring Event
+
+Method 1
+
+CREATE EVENT eventname
+ON SCHEDULT AT EVERY INTERVAL
+STARTS timestamp
+DO
+statements
+-------------------------
+
+Method 2
+
+CREATE EVENT eventname
+ON SCHEDULT AT EVERY INTERVAL
+STARTS timestamp
+ENDS timestamp
+DO
+statements
+-----------------------------------------------------------------
+=>(i) One Time Event
+
+CREATE TABLE IF NOT EXISTS vipcustomers(
+     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     name VARCHAR(50) NOT NULL,
+     email VARCHAR(50) NOT NULL UNIQUE,
+     emailverify INT
+);
+DESC vipcustomers;
+
+INSERT INTO vipcustomers(name,email,emailverify)
+VALUES ("aung aung","aungaung@gmail.com",1),
+          ("zaw zaw","zawzaw@gmail.com",1),
+          ("mya mya","myamya@gmail.com",1),
+          ("su su","susu@gmail.com",1),
+          ("yamin","yamin@gmail.com",1);
+
+INSERT INTO vipcustomers(name,email)
+VALUES ("hla hla","hlahla@gmail.com"),
+          ("thaw thaw","thawthaw@gmail.com");
+
+SELECT * FROM vipcustomers;
+
+CREATE EVENT vipcustomers_ev
+ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 30 SECOND
+DO
+DELETE FROM vipcustomers WHERE emailverify IS NULL;
+
+=>List all Events
+
+SHOW EVENTS;
+
+/*
+Db        Name                Definer             Time zone      Type
+wdf4102   vipcustomers_ev     root@localhost      SYSTEM         ONE TIME
+*/
+
+SELECT * FROM vipcustomers;
+SHOW EVENTS;
+
+INSERT INTO vipcustomers(name,email)
+VALUES ("hla hla","hlahla@gmail.com"),
+          ("thaw thaw","thawthaw@gmail.com");
+SELECT * FROM vipcustomers;
+
+
+CREATE EVENT vipcustomers_ev
+ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 30 SECOND
+ON COMPLETION PRESERVE
+DO
+DELETE FROM vipcustomers WHERE emailverify IS NULL;
+
+SELECT * FROM vipcustomers;
+SHOW EVENTS;
+
+=>Drop Event
+DROP EVENT IF EXISTS vipcustomers_ev;
+-----------------------------------------------------------------
+
+16EV

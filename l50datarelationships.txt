@@ -1,0 +1,214 @@
+=>Data Relationship
+(i)ONE to ONE Relationship (1:1)
+(ii)ONE to Many Relationship (1:n)
+(ii)Many to Many Relationship (n:n)
+
+Wifi passwaord
+--------------
+1 password = Many People
+1 password = 1 People // like airport wifi
+
+Company Project
+---------------
+Many Project = Many People
+
+DLT Co.,Ltd
+
+students 1:1 studensinfos
+teachers 1:n classes
+enrollments n:n
+reviews n:n
+
+=>students
+id (pk)
+regcode
+firstname
+lastname
+gender
+dob
+email
+password
+status
+created_at
+updated_at
+
+CREATE TABLE IF NOT EXISTS students(
+     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     regcode VARCHAR(10) NOT NULL UNIQUE,
+     firstname VARCHAR(20) NOT NULL,
+     lastname VARCHAR(20),
+     gender ENUM("1","0") NOT NULL,
+     dob DATE NOT NULL,
+     email VARCHAR(50) NOT NULL UNIQUE,
+     password VARCHAR(255) NOT NULL,
+     status ENUM("ENABLE","DISABLE","TERMINATE") DEFAULT "ENABLE",
+     created_at TIMESTAMP DEFAULT NOW(),
+     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO students(regcode,firstname,lastname,gender,dob,email,password)
+VALUES ("WDF1001","Aung","Aung",1,"2000-1-31","aungaung@gmail.com","12345"),
+          ("WDF1002","Su","Su",0,"2000-2-28","susu@gmail.com","12345");
+
+SELECT * FROM students;
+
+=>studensinfos
+id
+coverphoto
+profilephoto
+phone
+address
+role
+student_id (student_pk) fk
+
+Note: Role 1 = students
+          Role 2 = teachers
+
+CREATE TABLE IF NOT EXISTS studentinfos(
+     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     coverphoto VARCHAR(255),
+     profilephpto VARCHAR(255),
+     phone VARCHAR(15) NOT NULL UNIQUE,
+     address VARCHAR(100) NOT NULL,
+     role INT DEFAULT 1;
+     student_id INT
+     FOREIGN KEY(student_id) REFERENCES students("id") ON UPDATE CASCADE ON DELETE CASCADE;
+);
+
+=>subjects
+id
+img
+course
+subjecttype
+content
+requirement
+
+CREATE TABLE IF NOT EXISTS subjects(
+     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     img VARCHAR(255),
+     course VARCHAR(100) NOT NULL UNIQUE,
+     subjecttype SET("THEORY","PROJECT") NOT NULL,
+     requirement VARCHAR(100)
+);
+
+=>teachers
+id (pk)
+name
+phone
+email
+
+CREATE TABLE IF NOT EXISTS teachers(
+     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     name VARCHAR(30) NOT NULL,
+     phone VARCHAR(15) NOT NULL UNIQUE,
+     email VARCHAR(50) NOT NULL UNIQUE
+);
+
+=>classes
+id
+subject_id(subject_pk) fk
+batch
+fee
+startdate
+week
+startime
+endtime
+teacher_id (teachers_pk) fk
+
+CREATE TABLE IF NOT EXISTS classes(
+     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     subject_id INT,
+     batch INT NOT NULL,
+     fee DECIMAL(10,2) DEFAULT 0,
+     startdate DATE NOT NULL,
+     week SET("sun","mon","tue","wed","thu","fri","sat") NOT NULL
+     starttime TIME NOT NULL,
+     endtime TIME NOT NULL,
+     teacher_id INT,
+     FOREIGN KEY(subject_id) REFERENCES subjects("id"),
+     FOREIGN KEY(teacher_id) REFERENCES teachers("id")
+);
+
+=>attendances
+id
+class_id (classes_pk) fk
+student_id(student_pk) fk
+attcode
+remark
+created_at
+
+
+CREATE TABLE IF NOT EXISTS attendances(
+     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     class_id INT,
+     student_id INT,
+     attcode VARCHAR(5) NOT NULL,
+     remark VARCHAR(100),
+     created_at TIMESTAMP DEFAULT NOW(),
+     FOREIGN KEY(class_id) REFERENCES classes(id),
+     FOREIGN KEY(student_id) REFERENCES student_id(id)
+);
+=>enrollments
+id
+class_id (classes_pk) fk
+student_id(student_pk) fk
+paymentmethod
+status
+created_at
+updated_at
+CREATE TABLE IF NOT EXISTS enrollments(
+     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     class_id INT,
+     student_id INT,
+     paymentmethod ENUM("wire","kpay","cbpay","visa","wavemoney") NOT NULL,
+     status ENUM("enable","disable") DEFAULT "enable",
+     created_at TIMESTAMP DEFAULT NOW(),
+     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+     FOREIGN KEY(class_id) REFERENCES classes(id) ON UPDATE CASCADE,
+     FOREIGN KEY(student_id) REFERENCES student_id(id) ON UPDATE CASCADE
+);
+
+=>datastorages
+id
+url 
+class_id (classes_pk) fk
+enrollments_id(enrollments_pk) fk
+classdate
+created_at
+
+CREATE TABLE IF NOT EXISTS datastorages(
+     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     url VARCHAR(255) NOT NULL,
+     class_id INT,
+     enrollments_id INT,
+     classdate DATE NOT NULL,
+     created_at TIMESTAMP DEFAULT NOW(),
+     FOREIGN KEY(class_id) REFERENCES classes(id) ON UPDATE CASCADE,
+     FOREIGN KEY(enrollments_id) REFERENCES enrollments(id)
+);
+
+=>reviews
+id
+rating
+remark
+class_id (classes_pk) fk
+student_id(student_pk) fk
+created_at
+
+CREATE TABLE IF NOT EXISTS reviews(
+     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     rating INT NOT NULL CHECK(rating <= 5),
+     remark  VARCHAR(150),
+     class_id INT,
+     student_id INT,
+     created_at TIMESTAMP DEFAULT NOW(),
+     updated_at TIMESTAMP DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP,
+     FOREIGN KEY(class_id) REFERENCES classes(id) ON UPDATE CASCADE,
+     FOREIGN KEY(student_id) REFERENCES students(id) ON UPDATE CASCADE
+);
+
+HW 
+*database design for laundary service
+*create ready to use mysql code
+
+29DB

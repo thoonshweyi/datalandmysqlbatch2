@@ -1,0 +1,37 @@
+=>Temporary table
+     =Syntax
+
+     CREATE TEMPORARY TABLE IF NOT EXISTS tablename(
+          column1 dataype,
+          column2 dataype,
+          column3 dataype,
+          column4 dataype,
+          ....
+     );
+
+     *table is temporary and delete after logout
+     *help desk of some website use temporary table for temporarily record conversation between customers and help staffs to reduce database capacity
+
+     CREATE TEMPORARY TABLE IF NOT EXISTS chatrooms(
+          id INT NOT NULL AUTO_INCREMENT,
+          name VARCHAR(20),
+          age INT,
+          city VARCHAR(50),
+          PRIMARY KEY(id)
+     );
+     DESC chatrooms;
+
+     SHOW TABLES;
+
+     INSERT INTO chatrooms(name,age,city)
+     VALUES ("aung aung",20,"yangon"),
+               ("kyaw kyaw",20,"yangon"),
+               ("tun tun",20,"yangon");
+
+     SELECT * FROM chatrooms;
+
+     =>Drop Temporary table
+     DROP TABLE chatrooms;
+     DROP TEMPORARY TABLE chatrooms;
+
+     ----------------------------------------------------

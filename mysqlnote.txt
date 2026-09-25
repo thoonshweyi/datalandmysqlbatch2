@@ -22,6 +22,7 @@
 
         SHOW FULL TABLES FROM databasename;
         SHOW FULL TABLES IN databasename;
+    
     =>Create a new Table
         CREATE TABLE tablename(
             colume1 datatype,
@@ -51,6 +52,7 @@
 
             SHOW COLUMNS FROM databasename.tablename;
             SHOW COLUMNS FROM tablename IN databasename;
+    
     =>Delete a table
         -Single
             DROP TABLE tablename;
@@ -69,7 +71,7 @@
         ALTER TABLE tablename
         RENAME TO newtablename;
 
-=>Row
+=>CREATE
     => Insert Data Into Table
         -Single
             -Method 1
@@ -97,6 +99,7 @@
             -Method 2 must give values to all columns
          */
          
+=>READ
     =>Select Data
         SELECT * FROM tablename;
         SELECT colume1,colume2,colume3,... FROM tablename;
@@ -115,165 +118,6 @@
                 
                 SELECT id,firstname AS 'first name',lastname AS 'last name' FROM members; 
 
-=>Constraints
-    =>NULL & NOT NULL
-        CREATE TABLE IF NOT EXISTS students(
-            name VARCHAR(10),
-            age INT(5)
-        );
-        INSERT INTO students(name,age)
-        VALUE('aung aung',20);
-
-        INSERT INTO students(name)
-        VALUE('aye aye');
-
-        INSERT INTO students(age)
-        VALUE(20);
-
-        INSERT INTO students()
-        VALUE();
-
-        INSERT INTO students()
-        VALUE();
-
-        //aung aung, 20
-        //aye aye, NULL
-        //NULL, 20
-        //NULL, NULL
-        //NULL, NULL
-
-
-        CREATE TABLE IF NOT EXISTS students(
-            name NOT NULL VARCHAR(10),
-            age INT(5)
-        );
-
-        DESC students;
-        /*
-            NULL = 'NO' for NOT NULL column
-            NULL = 'YES' for default and NULL column
-        */
-
-        INSERT INTO students(name,age)
-        VALUE('aung aung',20);
-
-        INSERT INTO students(name)
-        VALUE('aye aye');
-
-        *error
-        INSERT INTO students(age)
-        VALUE(20);
-
-        *error
-        INSERT INTO students()
-        VALUE();
-
-        *error
-        INSERT INTO students()
-        VALUE();
-
-        *because of version no error. Blur('') inserted
-
-    =>DEFAULT
-        
-        CREATE TABLE vehicles(
-            brand VARCHAR(100) DEFAULT "unnamed",
-            madeby VARCHAR(20) NOT NULL DEFAULT "china",
-        );
-
-        DESC vehicles;
-        /*
-            DEFAULT = 'value' for DEFAULT column
-        */
-
-        INSERT INTO vehicles(brand,madeby)
-        VALUE ("toyota","japan");
-
-        INSERT INTO vehicles(brand)
-        VALUE ("suzuki");
-
-        INSERT INTO vehicles(madeby)
-        VALUE ("us");
-
-        INSERT INTO vehicles()
-        VALUE();
-
-        /*
-            toyota,japan
-            susuki,china
-            unnamed,us
-            unnamed,china
-        */
-
-        /*
-            Default column never NULL
-        */
-
-    =>Primary key
-        -use for table relationship
-        -unique
-        
-        -Method 1
-            CREATE TABLE IF NOT EXISTS persons(
-                id INT NOT NULL PRIMARY KEY,
-                firstname VARCHAR(255) NOT NULL,
-                lastname VARCHAR(255)
-                age INT
-            );
-        
-        -Methoc 2
-            CREATE TABLE IF NOT EXISTS persons(
-                id INT NOT NULL,
-                firstname VARCHAR(255) NOT NULL,
-                lastname VARCHAR(255),
-                age INT,
-                PRIMARY KEY (id)
-            );
-
-        DESC persons;
-        /*
-            KEY = "PRI" for PRIMARY KEY column
-            primary key column auto NOT NULL
-        */
-    
-    =>AUTO_INCREMENT
-        CREATE TABLE IF NOT EXISTS computers(
-            id INT NOT NULL AUTO_INCREMENT,
-            brand VARCHAR(255),
-            type VARCHAR(255),
-            PRPIMARY Key(id);
-        );
-
-        INSERT INTO computers(brand,type)
-        VALUE('asus','china');
-
-        INSERT INTO computers(brand,type)
-        VALUE(10,'acer',china');
-
-        INSERT INTO computers(brand,type)
-        VALUE('hp',thai');
-
-        INSERT INTO computers(brand,type)
-        VALUE(4,'samsung','korea');
-
-        INSERT INTO computers(brand,type)
-        VALUE('nokia','japan');
-
-        /*
-            1, asus, china
-            10, acer, china
-            11, hp, thai
-            4, samsung, korea
-            12, nokia, japan
-        */
-
-    =>FOREIGN KEY
-
-    =>UNIQUE
-        ...
-
-    =>CHECK
-    
 =>Ctn Table
         
     =>Add new column
@@ -369,61 +213,6 @@
         ALTER TABLE itaccessories
         DROP PRPIMARY KEY;
 
-    =>ADD Unique Key
-
-        -Method 1
-            ALTER TABLE itaccessories
-            ADD UNIQUE(item);
-
-            DESC itaccessories
-                /*
-                    Key = "UNI" for UNIQUE KEY column
-                */
-
-            SHOW INDEX FROM itaccessories;
-                /*
-                    ---------------------------------------------------
-                    Table           Key_name                Column_name
-                    ---------------------------------------------------
-                    itaccessories   item                    item
-                */
-
-            /*
-                -Unique Key can't be duplicate 
-                -'Mouse' and 'mouse' duplicate.
-            */
-
-        -Method 2
-            ALTER TABLE itaccessories
-            ADD CONSTRAINT uc_item_totalqty UNIQUE (item,totalqty);
-
-            DESC itaccessories
-                /*
-                    Key = "MUL" for item
-                */
-
-            SHOW INDEX FROM itaccessories;
-                /*
-                    ---------------------------------------------------
-                    Table           Key_name                Column_name
-                    ---------------------------------------------------
-                    itaccessories   uc_item_totalqty        item
-                    itaccessories   uc_item_totalqty        totalqty
-                */
-
-            /*
-                'maung maung, 20' and 'maung maung, 30' doesn't duplicate.
-            */
-    
-    =>Drop Unique Key
-        -Method 1
-            ALTER TABLE itaccessories
-            DROP INDEX item;
-
-        -Method 2
-            ALTER TABLE itaccessories
-            DROP INDEX uc_item_totalqty;
-
     =>Clone|Copy Table
         =>Syntax
             CREATE TABLE IF NOT EXISTS newtable AS 
@@ -435,7 +224,7 @@
         DESC workers;
         // get table structre as members and members table datas  
         // but PRIMARY KEY AND AUTO_INCREMENT is not include
-        
+       
 =>MYSQL String Method
 
     =>CONCAT()
@@ -1076,28 +865,756 @@
 
 =>String datatype
 
-    Data Types                          Description
+        Data Types                          Description
 
-1.  CHAR(size)                          A fixed length string. size -> 0 - 255
-2.  VARCHAR(size)                       A variable length string. size -> 0 - 255
+    1.  CHAR(size)                          A fixed length string. size -> 0 - 255
+    2.  VARCHAR(size)                       A variable length string. size -> 0 - 255
 
-3.  TEXT                                Hold a string with maximun size 65kb. (65,xxx)
-4.  TINYTEXT                            Hold a string with maximum size 255b  (255 bytes)    
-5.  MEDIUMTEXT                          Hold a string with maximum size 16mb  (16,xxx,xxx)
-6.  LONGTEXT                            Hold a string with maximum size 4gb   (4,xxx,xxx,xxx)
+    3.  TEXT                                Hold a string with maximun size 65kb. (65,xxx)
+    4.  TINYTEXT                            Hold a string with maximum size 255b  (255 bytes)    
+    5.  MEDIUMTEXT                          Hold a string with maximum size 16mb  (16,xxx,xxx)
+    6.  LONGTEXT                            Hold a string with maximum size 4gb   (4,xxx,xxx,xxx)
 
-7.  BINARY(size)                        Equal to CHAR(), but stores binary byte string.
-8.  VARBINARY(size)                     Equal to VARCHAR(), but stores binary byte string.
+    7.  BINARY(size)                        Equal to CHAR(), but stores binary byte string.
+    8.  VARBINARY(size)                     Equal to VARCHAR(), but stores binary byte string.
 
-9.  TIMYBLOB                            BLOB (Binary Large Object)
-10. BLOB
-11. MEDIUMBLOB
-12. LONGBLOB
+    9.  TIMYBLOB                            BLOB (Binary Large Object)
+    10. BLOB
+    11. MEDIUMBLOB
+    12. LONGBLOB
 
-13. ENUM("val1","val2",...)
-14. SET("val1","val2",...)
+    13. ENUM("val1","val2",...)
+    14. SET("val1","val2",...)
+    ----------------------------------------------------------
 
+        ENUM('male','female')
+
+        SET('red','green','blue')
+
+    =>How the character take spaces on memery?
+
+        1bit = 8bit
+        byte = 1024
+        kb
+        mb
+        gb
+        tb
+        ...
+    
+    =>CHAR() VS VARCHAR()
+        =>CHAR()
+            -CHAR always take fixed length for the value
+            -CHAR is faster for fixed length text
+                eg.telephone numbers, zip code, Yes/No Y/N, Male/Female M/F
         
-        
+        =>VARCHAR()
+            -VARCHAR take variable length for the value
+            -VARCHAR can save memory space
+
+
+        CHAR(4) VS VARCHAR(4)
+        User Input
+        Value           CHAR(4)         Storage         VARCHAR(4)          Storage
+        ''              '    '          4 bytes         ''                  1 byte
+        'ab'            'ab  '          4 bytes         'ab'                3 byte
+        'abcd'          'abcd'          4 bytes         'abcd'              5 byte
+        'abcdefg'       'abcd'          4 bytes         'abcd'              5 byte
+        -----------------------------------------------------------
 
     
+
+
+=>Constraints
+    =>NULL & NOT NULL
+        CREATE TABLE IF NOT EXISTS students(
+            name VARCHAR(10),
+            age INT(5)
+        );
+        INSERT INTO students(name,age)
+        VALUE('aung aung',20);
+
+        INSERT INTO students(name)
+        VALUE('aye aye');
+
+        INSERT INTO students(age)
+        VALUE(20);
+
+        INSERT INTO students()
+        VALUE();
+
+        INSERT INTO students()
+        VALUE();
+
+        //aung aung, 20
+        //aye aye, NULL
+        //NULL, 20
+        //NULL, NULL
+        //NULL, NULL
+
+
+        CREATE TABLE IF NOT EXISTS students(
+            name NOT NULL VARCHAR(10),
+            age INT(5)
+        );
+
+        DESC students;
+        /*
+            NULL = 'NO' for NOT NULL column
+            NULL = 'YES' for default and NULL column
+        */
+
+        INSERT INTO students(name,age)
+        VALUE('aung aung',20);
+
+        INSERT INTO students(name)
+        VALUE('aye aye');
+
+        *error
+        INSERT INTO students(age)
+        VALUE(20);
+
+        *error
+        INSERT INTO students()
+        VALUE();
+
+        *error
+        INSERT INTO students()
+        VALUE();
+
+        *because of version no error. Blur('') inserted
+
+    =>DEFAULT
+        
+        CREATE TABLE vehicles(
+            brand VARCHAR(100) DEFAULT "unnamed",
+            madeby VARCHAR(20) NOT NULL DEFAULT "china",
+        );
+
+        DESC vehicles;
+        /*
+            DEFAULT = 'value' for DEFAULT column
+        */
+
+        INSERT INTO vehicles(brand,madeby)
+        VALUE ("toyota","japan");
+
+        INSERT INTO vehicles(brand)
+        VALUE ("suzuki");
+
+        INSERT INTO vehicles(madeby)
+        VALUE ("us");
+
+        INSERT INTO vehicles()
+        VALUE();
+
+        /*
+            toyota,japan
+            susuki,china
+            unnamed,us
+            unnamed,china
+        */
+
+        /*
+            Default column never NULL
+        */
+
+    =>Primary key
+        -use for table relationship
+        -unique
+        
+        -Method 1
+            CREATE TABLE IF NOT EXISTS persons(
+                id INT NOT NULL PRIMARY KEY,
+                firstname VARCHAR(255) NOT NULL,
+                lastname VARCHAR(255)
+                age INT
+            );
+        
+        -Methoc 2
+            CREATE TABLE IF NOT EXISTS persons(
+                id INT NOT NULL,
+                firstname VARCHAR(255) NOT NULL,
+                lastname VARCHAR(255),
+                age INT,
+                PRIMARY KEY (id)
+            );
+
+        DESC persons;
+        /*
+            KEY = "PRI" for PRIMARY KEY column
+            primary key column auto NOT NULL
+        */
+    
+    =>AUTO_INCREMENT
+        CREATE TABLE IF NOT EXISTS computers(
+            id INT NOT NULL AUTO_INCREMENT,
+            brand VARCHAR(255),
+            type VARCHAR(255),
+            PRPIMARY Key(id);
+        );
+
+        INSERT INTO computers(brand,type)
+        VALUE('asus','china');
+
+        INSERT INTO computers(brand,type)
+        VALUE(10,'acer',china');
+
+        INSERT INTO computers(brand,type)
+        VALUE('hp',thai');
+
+        INSERT INTO computers(brand,type)
+        VALUE(4,'samsung','korea');
+
+        INSERT INTO computers(brand,type)
+        VALUE('nokia','japan');
+
+        /*
+            1, asus, china
+            10, acer, china
+            11, hp, thai
+            4, samsung, korea
+            12, nokia, japan
+        */
+    
+    =>UNIQUE
+        /*
+            - Unique Key column can't be duplicate. 
+            - Case sensitive for column value.
+        */
+
+        =Syntax ( Single Column )
+
+            CREATE TABLE tablename(
+                column1 datatype,
+                column2 datatype UNIQUE,
+                column3 datatype,
+                ...
+            );
+
+            CREATE TABLE tablename(
+                column1 datatype,
+                column2 datatype,
+                column3 datatype,
+                ...
+                UNIQUE(colume2)
+            );
+
+        =Syntax ( Multi Column )
+
+            CREATE TABLE tablename(
+                column1 datatype,
+                column2 datatype UNIQUE,
+                column3 datatype UNIQUE,
+                ...
+            );
+        
+        =Syntax ( Combined Column )
+
+            CREATE TABLE tablename(
+                column1 datatype,
+                column2 datatype,
+                column3 datatype,
+                ...
+                UNIQUE(column1,column2)
+            );
+
+        =Exercise ( Single )
+
+            CREATE TABLE IF NOT EXISTS countries(
+                id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(50) NOT NULL UNIQUE,
+                capital VARCHAR(50) NOT NULL,
+                currencyname VARCHAR(30),
+                isocode VARCHAR(10)
+            );
+
+            DESC countries; 
+            //name -> Key = UNI
+
+            SHOW INDEX FROM countries;
+            /*
+                Table       Key_name        Column_name
+                countries   PRIMARY         id
+                countries   name            name
+            */
+
+            DROP TABLE IF EXISTS countries;
+
+            CREATE TABLE IF NOT EXISTS countries(
+                id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(50) NOT NULL,
+                capital VARCHAR(50) NOT NULL,
+                currencyname VARCHAR(30),
+                isocode VARCHAR(10),
+                UNIQUE(name)
+            );
+            DESC countries;
+            SHOW INDEX FROM countries;
+            ----------------------------------------------
+            INSERT INTO countries(name,capital,currencyname,isocode)
+            VALUES ("myanmar","naypyidaw","myanmar kyat","mmk"),
+                    ("thailand","bangkok","thai baht","thb"),
+                    ("indonesia","jakata","indonesia rupiee","idr"),
+                    ("srilanka","colombo","srilanka rupiee","lkr");
+
+            SELECT * FROM countries;
+
+            *error ( Duplicate entry 'myanmar' for key 'name' )
+            INSERT INTO countries(name,capital,currencyname,isocode)
+            VALUES ("myanmar","yangon","burmese kyat","mmk");
+
+            *error ( Duplicate entry 'Myanmar' for key 'name' )
+            INSERT INTO countries(name,capital,currencyname,isocode)
+            VALUES ("Myanmar","yangon","burmese kyat","mmk");
+
+            *error ( Duplicate entry 'Thailand' for key 'name' )
+            UPDATE countries SET name = "Thailand" WHERE id = 4;
+
+        =EXERCISE ( Muli )
+
+            CREATE TABLE IF NOT EXISTS cashiers(
+                id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(50) NOT NULL,
+                email VARCHAR(50) NOT NULL UNIQUE,
+                password VARCHAR(100) NOT NULL,
+                phone VARCHAR(15) UNIQUE
+            );
+
+            DESC cashiers;
+            /*
+                email -> Key = UNI
+                phone -> Key = UNI
+            */
+
+
+            SHOW INDEX FROM cashiers;
+            /*
+                Table       Key_name        Column_name
+                cashiers   PRIMARY         id
+                cashiers   name            name
+                cashiers   phone           phone
+            */
+
+            INSERT INTO cashiers(name,email,password,phone)
+            VALUES ("su su","susu@gmail.com",12345,"0911111"),
+                    ("yu yu","yuyu@gmail.com",12345,"0922222"),
+                    ("hla hla","hlahla@gmail.com",12345,"0933333"),
+                    ("tun tun","tuntun@gmail.com",12345,"0944444");
+
+            *error ( Duplicate entry 'susu@gmail.com' for key 'email' ) 
+            INSERT INTO cashiers(name,email,password,phone)
+            VALUE ("ma ma","susu@gmail.com",12345,"0955555");
+
+            *error ( Duplicate entry '0944444' for key 'phone' )
+            INSERT INTO cashiers(name,email,password,phone)
+            VALUE ("ma ma","mama@gmail.com",12345,"0944444");
+
+            *error ( Duplicate entry 'yuyu@gmail.com' for key 'email' )
+            INSERT INTO cashiers(name,email,password,phone)
+            VALUE ("ma ma","yuyu@gmail.com",12345,"0933333");
+
+            INSERT INTO cashiers(name,email,password,phone)
+            VALUE ("ma ma","mama@gmail.com",12345,"0955555");
+            //* id 8 because id update even if transition fail
+
+            SELECT * FROM cashiers;
+      
+        =EXERCISE ( Combined )
+            CREATE TABLE IF NOT EXISTS accountants(
+                id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(50) NOT NULL,
+                email VARCHAR(50) NOT NULL,
+                password VARCHAR(100) NOT NULL,
+                phone VARCHAR(15),
+                UNIQUE(email,phone)
+            );
+
+            DESC accountants; 
+            // email -> Key = MUL
+            
+            SHOW INDEX FROM accountants;
+            /*
+                Table       Key_name        Column_name
+
+                accountants   PRIMARY         id
+                accountants   email           email
+                accountants   email           phone
+            */
+
+            INSERT INTO accountants(name,email,password,phone)
+            VALUES ("su su","susu@gmail.com",12345,"0911111"),
+                    ("yu yu","yuyu@gmail.com",12345,"0922222"),
+                    ("hla hla","hlahla@gmail.com",12345,"0933333"),
+                    ("tun tun","tuntun@gmail.com",12345,"0944444");
+
+            SELECT * FROM accountants;
+
+            INSERT INTO accountants(name,email,password,phone)
+            VALUE ("ma ma","susu@gmail.com",12345,"0955555");
+
+            INSERT INTO accountants(name,email,password,phone)
+            VALUE ("ma ma","mama@gmail.com",12345,"0944444");
+
+            INSERT INTO accountants(name,email,password,phone)
+            VALUE ("ma ma","yuyu@gmail.com",12345,"0933333");
+
+            *error ( Duplicate entry 'tuntun@gmail.com-0944444' for key 'email' )
+            INSERT INTO accountants(name,email,password,phone)
+            VALUE ("ma ma","tuntun@gmail.com",12345,"0944444");
+
+            SELECT * FROM accountants;
+            ------------------------------------------------------------------------
+            CREATE TABLE IF NOT EXISTS financceofficers(
+                id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(50) NOT NULL,
+                email VARCHAR(50) NOT NULL,
+                password VARCHAR(100) NOT NULL,
+                phone VARCHAR(15),
+                UNIQUE(name),
+                CONSTRAINT uc_email_phone UNIQUE(email,phone)
+            );
+            *naming 
+                email_phone
+                uc_email_phone
+                (uc = User Constraint)
+
+
+            DESC financceofficers; 
+            // email -> Key = MUL
+
+            SHOW INDEX FROM financceofficers;
+            /*
+                Table               Key_name        Column_name
+
+                financceofficers   PRIMARY         id
+                financceofficers   uc_email_phone  email
+                financceofficers   uc_email_phone  phone
+            */
+
+        =>DROP UNIQUE KEY 
+            -Single
+                ALTER TABLE countries DROP INDEX name;
+
+            -Multi
+                ALTER TABLE cashiers DROP INDEX phone;
+                ALTER TABLE cashiers DROP INDEX email;
+        
+            -Combined
+                *error (Can't DROP INDEX `phone`; check that it exists)
+                ALTER TABLE accountants
+                DROP INDEX phone;
+
+                ALTER TABLE accountants
+                DROP INDEX email;
+
+                ------------------------
+
+                *error (Can't DROP INDEX `phone`; check that it exists)
+                ALTER TABLE financceofficers
+                DROP INDEX phone;
+
+                ALTER TABLE financceofficers
+                DROP INDEX uc_email_phone;
+
+        =>ADD Unique Key
+
+            -Method 1
+                ALTER TABLE itaccessories
+                ADD UNIQUE(item);
+
+            -Method 2
+                ALTER TABLE itaccessories
+                ADD CONSTRAINT uc_item_totalqty UNIQUE (item,totalqty);      
+    
+    =>CHECK
+        CREATE TABLE IF NOT EXISTS purchases(
+            id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(50) NOT NULL,
+            ordinaryprice DECIMAL(10,2) NOT NULL,
+            sellprice DECIMAL(10,2) NOT NULL
+        );
+        DESC purchases;
+
+        INSERT INTO purchases(name,ordinaryprice,sellprice) 
+        VALUE ("redbull",400,1000);
+
+        INSERT INTO purchases(name,ordinaryprice,sellprice) 
+        VALUE ("sponsor",-300,600);
+
+        SELECT * FROM purchases;
+
+        DROP TABLE IF EXISTS purchases;
+
+        ===========================================================================================
+
+        CREATE TABLE IF NOT EXISTS purchases(
+            id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(50) NOT NULL,
+            ordinaryprice DECIMAL(10,2) NOT NULL CHECK(ordinaryprice >= 0),
+            sellprice DECIMAL(10,2) NOT NULL CHECK(sellprice >= 0)
+        );
+        DESC purchases; 
+        // nothing special change
+
+        INSERT INTO purchases(name,ordinaryprice,sellprice) 
+        VALUES ("redbull",400,1000),
+                ("sponsor",300,500),
+                ("deedo",100,200);
+
+        SELECT * FROM purchases;
+
+        *error
+        INSERT INTO purchases(name,ordinaryprice,sellprice) 
+        VALUE ("jo-ey",-1,400);
+
+        *error
+        INSERT INTO purchases(name,ordinaryprice,sellprice) 
+        VALUE ("jo-ey",300,-400);
+   
+    =>FOREIGN KEY
+        =>References and Cascade
+            /*
+                Why multi tables?
+                    - to reduce data redundancy
+                    - to reduce database size and capicity
+
+                    if single table
+
+                    orders
+                    ------
+                    name        age     phone   address     item    price
+                    -----------------------------------------------------
+                    Aung Aung   20      09xxx   yangon      water   500
+                    Aung Aung   20      09xxx   yangon      juice   800  
+
+            */
+
+            CREATE TABLE IF NOT EXISTS buyers(
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                firstname VARCHAR(20),
+                lastname VARCHAR(20),
+                email VARCHAR(50)
+            );
+
+            DESC buyers;
+
+            INSERT INTO buyers(firstname,lastname,email)
+            VALUES ("aung","aung","aungaung@gmail.com"),
+                    ("maung","maung","maungmaung@gmail.com"),
+                    ("kyaw","kyaw","kyawkyaw@gmail.com"),
+                    ("zaw","zaw","zawzaw@gmail.com"),
+                    ("su","su","susu@gmail.com"),
+                    ("aye","aye","ayeaye@gmail.com"),
+                    ("yu","yu","yuyu@gmail.com");
+
+            SELECT * FROM buyers;
+
+            CREATE TABLE IF NOT EXISTS orders(
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                orderdate DATE,
+                amount DECIMAL(10,2),
+                buyer_id INT
+            );
+
+            DESC orders;
+
+            INSERT INTO orders(orderdate,amount,buyer_id)
+            VALUES ("2023/03/10","99.99",1),
+                    ("2023/03/10","75.35",1),
+                    ("2023/03/15","100.25",3),
+                    ("2023/03/30","20.30",2),
+                    ("2023/03/31","50",3);
+
+            SELECT * FROM orders;
+
+            INSERT INTO orders(orderdate,amount,buyer_id)
+            VALUES ("2023/04/1","70.25",20);
+
+            DELETE FROM buyers WHERE id=3;
+
+            SELECT * FROM orders;
+            SELECT * FROM buyers;
+
+            /*
+                Before table are connected,
+                - can insert a buyers to "orders" who doesn't esist in "buyers"
+                - can delete a buyers who has transaction in "orders" 
+            */
+
+            ===========================================================================================
+
+            CREATE TABLE IF NOT EXISTS orders(
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                orderdate DATE,
+                amount DECIMAL(10,2),
+                buyer_id INT,
+                FOREIGN KEY(buyer_id) REFERENCES buyers(id)
+            );
+
+            DESC orders;        
+            // buyer_id -> Key = MUL
+            
+            SHOW INDEX FROM orders;
+            /*
+                Table       Key_name        Column_name
+                ----------------------------------------
+                orders      PRIMARY         id
+                orders      buyer_id        buyer_id
+            */
+
+            INSERT INTO orders(orderdate,amount,buyer_id)
+            VALUES ("2023/03/10","99.99",1),
+                    ("2023/03/10","75.35",1),
+                    ("2023/03/15","100.25",4),
+                    ("2023/03/30","20.30",2),
+                    ("2023/03/31","50",5);
+
+            SELECT * FROM orders;
+
+            *error
+            INSERT INTO orders(orderdate,amount,buyer_id)
+            VALUES ("2023/04/1","70.25",20);
+            
+            SELECT * FROM orders;
+
+            *errors
+            DELETE FROM buyers WHERE id = 4;
+
+            SELECT * FROM buyers;
+
+            =>CASCADE (DELETE)
+
+                CREATE TABLE IF NOT EXISTS orders(
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    orderdate DATE,
+                    amount DECIMAL(10,2),
+                    buyer_id INT,
+                    FOREIGN KEY(buyer_id) REFERENCES buyers(id) ON DELETE CASCADE
+                );
+
+                DESC orders;
+                SHOW INDEX FROM orders;
+
+                INSERT INTO orders(orderdate,amount,buyer_id)
+                VALUES ("2023/03/10","99.99",1),
+                        ("2023/03/10","75.35",1),
+                        ("2023/03/15","100.25",4),
+                        ("2023/03/30","20.30",2),
+                        ("2023/03/31","50",5);
+
+                SELECT * FROM orders;
+
+                *error
+                INSERT INTO orders(orderdate,amount,buyer_id)
+                VALUES ("2023/04/1","70.25",20);
+
+                DELETE FROM buyers WHERE id = 4;
+                *also delete related rows in "orders"
+
+                SELECT * FROM buyers;
+                SELECT * FROM orders;
+                
+            =>CASCATE (UPDATE)
+                CREATE TABLE IF NOT EXISTS orders(
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    orderdate DATE,
+                    amount DECIMAL(10,2),
+                    buyer_id INT,
+                    FOREIGN KEY(buyer_id) REFERENCES buyers(id) ON UPDATE CASCADE ON DELETE CASCADE
+                );
+
+                DESC orders;        
+                SHOW INDEX FROM orders;
+
+                INSERT INTO orders(orderdate,amount,buyer_id)
+                VALUES ("2023/03/10","99.99",1),
+                        ("2023/03/10","75.35",1),
+                        ("2023/03/15","100.25",4),
+                        ("2023/03/30","20.30",2),
+                        ("2023/03/31","50",5);
+
+                SELECT * FROM orders;
+
+                DELETE FROM buyers WHERE id=3;
+
+                *error
+                DELETE FROM buyers WHERE id=5;
+
+                SELECT * FROM buyers;
+                SELECT * FROM orders;
+
+                UPDATE buyers SET id=8 WHERE id=6; 
+                SELECT * FROM buyers;
+
+                UPDATE buyers SET id=9 WHERE id=1; 
+                *also update related row in "orders"
+
+                SELECT * FROM buyers;
+                SELECT * FROM orders;
+            
+            =>CASCADE (UPDATE DELETE)
+                CREATE TABLE IF NOT EXISTS orders(
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    orderdate DATE,
+                    amount DECIMAL(10,2),
+                    buyer_id INT,
+                    FOREIGN KEY(buyer_id) REFERENCES buyers(id) ON UPDATE CASCADE ON DELETE CASCADE
+                );
+
+                DESC orders;        
+                SHOW INDEX FROM orders;
+
+                INSERT INTO orders(orderdate,amount,buyer_id)
+                VALUES ("2023/03/10","99.99",1),
+                        ("2023/03/10","75.35",1),
+                        ("2023/03/15","100.25",4),
+                        ("2023/03/30","20.30",2),
+                        ("2023/03/31","50",5);
+
+                SELECT * FROM orders;
+
+                DELETE FROM buyers WHERE id=3;
+                SELECT * FROM buyers;
+
+
+                DELETE FROM buyers WHERE id=5;
+                SELECT * FROM buyers;
+                SELECT * FROM orders;
+
+
+                UPDATE buyers SET id=8 WHERE id=6; 
+                SELECT * FROM buyers;
+
+                UPDATE buyers SET id=9 WHERE id=1; 
+                SELECT * FROM buyers;
+                SELECT * FROM orders;
+
+            =>ON DELETE SET NULL
+                CREATE TABLE IF NOT EXISTS orders(
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    orderdate DATE,
+                    amount DECIMAL(10,2),
+                    buyer_id INT,
+                    FOREIGN KEY(buyer_id) REFERENCES buyers(id) ON DELETE SET NULL
+                );
+
+                DESC orders;        
+                SHOW INDEX FROM orders;
+
+                INSERT INTO orders(orderdate,amount,buyer_id)
+                VALUES ("2023/03/10","99.99",1),
+                        ("2023/03/10","75.35",1),
+                        ("2023/03/15","100.25",4),
+                        ("2023/03/30","20.30",2),
+                        ("2023/03/31","50",5);
+
+                SELECT * FROM orders;
+
+                DELETE FROM buyers WHERE id=3;
+                SELECT * FROM buyers;
+
+                DELETE FROM buyers WHERE id=5;
+                SELECT * FROM buyers;
+                SELECT * FROM orders;
+
+=>JOINS
